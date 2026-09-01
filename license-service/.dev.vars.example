@@ -1,0 +1,7 @@
+# Local development secrets. Copy to .dev.vars (gitignored) and fill in.
+# Production values go in `wrangler secret put <NAME>` instead.
+
+DODO_API_KEY=dodo-test-key
+DODO_WEBHOOK_SECRET=whsec_replace_with_the_value_from_the_dodo_dashboard
+SIGNING_KEY_PKCS8=replace_with_the_private_key_printed_by_npm_run_genkeys
+ADMIN_TOKEN=pick-a-long-random-string

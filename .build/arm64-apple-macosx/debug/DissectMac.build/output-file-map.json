@@ -1,0 +1,11 @@
+{
+  "": {
+    "swift-dependencies": "/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/debug/DissectMac.build/master.swiftdeps"
+  },
+  "/Users/ritambujdubey/Documents/GitHub/ScanMac/Sources/App.swift": {
+    "dependencies": "/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/debug/DissectMac.build/App.d",
+    "object": "/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/debug/DissectMac.build/App.swift.o",
+    "swiftmodule": "/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/debug/DissectMac.build/App~partial.swiftmodule",
+    "swift-dependencies": "/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/debug/DissectMac.build/App.swiftdeps"
+  }
+}

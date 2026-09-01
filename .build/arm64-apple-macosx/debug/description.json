@@ -1,0 +1,219 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.DrivePurge-arm64-apple-macosx16.0-debug.module" : {
+      "executable" : "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "fileList" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.build/sources",
+      "importPath" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/Sources/App.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.build/sources"
+        }
+      ],
+      "isLibrary" : false,
+      "moduleName" : "DrivePurge",
+      "moduleOutputPath" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/Modules/DrivePurge.swiftmodule",
+      "objects" : [
+        "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.build/App.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "arm64-apple-macosx13.0",
+        "-enable-batch-mode",
+        "-index-store-path",
+        "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j8",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-module-cache-path",
+        "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/ModuleCache",
+        "-parseable-output",
+        "-Xfrontend",
+        "-entry-point-function-name",
+        "-Xfrontend",
+        "DrivePurge_main",
+        "-parse-as-library",
+        "-swift-version",
+        "5",
+        "-sdk",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-g",
+        "-Xcc",
+        "-isysroot",
+        "-Xcc",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "drivepurge"
+      ],
+      "outputFileMapPath" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.build/App.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/Modules/DrivePurge.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/Users/ritambujdubey/Documents/GitHub/DrivePurge/Sources/App.swift"
+      ],
+      "tempsPath" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "DrivePurge" : [
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc",
+      "-module-name",
+      "DrivePurge",
+      "-package-name",
+      "drivepurge",
+      "-incremental",
+      "-c",
+      "/Users/ritambujdubey/Documents/GitHub/DrivePurge/Sources/App.swift",
+      "-I",
+      "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/Modules",
+      "-target",
+      "arm64-apple-macosx13.0",
+      "-enable-batch-mode",
+      "-index-store-path",
+      "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j8",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-module-cache-path",
+      "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/ModuleCache",
+      "-parseable-output",
+      "-Xfrontend",
+      "-entry-point-function-name",
+      "-Xfrontend",
+      "DrivePurge_main",
+      "-parse-as-library",
+      "-swift-version",
+      "5",
+      "-sdk",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-g",
+      "-Xcc",
+      "-isysroot",
+      "-Xcc",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "drivepurge",
+      "-driver-use-frontend-path",
+      "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "DrivePurge" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "writeCommands" : {
+    "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge-entitlement.plist" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<entitlement-plist>"
+        },
+        {
+          "kind" : "virtual",
+          "name" : "<com.apple.security.get-task-allow>"
+        }
+      ],
+      "outputFilePath" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge-entitlement.plist"
+    },
+    "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/Sources/App.swift"
+        }
+      ],
+      "outputFilePath" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.build/sources"
+    },
+    "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.product/Objects.LinkFileList" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<link-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.build/App.swift.o"
+        }
+      ],
+      "outputFilePath" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/DrivePurge.product/Objects.LinkFileList"
+    },
+    "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/Library/Developer/CommandLineTools/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/Users/ritambujdubey/Documents/GitHub/DrivePurge/.build/arm64-apple-macosx/debug/swift-version--1AB21518FC5DEDBE.txt"
+    }
+  }
+}

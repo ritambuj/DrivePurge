@@ -1,0 +1,155 @@
+#!/usr/bin/env node
+/**
+ * DrivePurge licence admin.
+ *
+ *   export DRIVEPURGE_ADMIN_TOKEN=…            (wrangler secret ADMIN_TOKEN)
+ *   export DRIVEPURGE_API=http://localhost:8787   (optional; defaults to prod)
+ *
+ *   ./Scripts/license issue  --email a@b.com --note "press copy" [--seats 3]
+ *   ./Scripts/license find   a@b.com
+ *   ./Scripts/license show   DP1-XXXX-XXXX-XXXX-XXXX
+ *   ./Scripts/license revoke DP1-… --reason chargeback
+ *   ./Scripts/license restore DP1-…
+ *   ./Scripts/license release DP1-… --device <hash>
+ */
+
+const API = process.env.DRIVEPURGE_API ?? 'https://api.drivepurge.com';
+const TOKEN = process.env.DRIVEPURGE_ADMIN_TOKEN;
+
+if (!TOKEN) {
+  console.error('DRIVEPURGE_ADMIN_TOKEN is not set.\n');
+  console.error('  export DRIVEPURGE_ADMIN_TOKEN="$(op read …)"   # or wherever you keep it');
+  process.exit(2);
+}
+
+const [command, ...rest] = process.argv.slice(2);
+
+/** Splits `--flag value` pairs out of the remaining arguments. */
+const flags = {};
+const positional = [];
+for (let i = 0; i < rest.length; i++) {
+  if (rest[i].startsWith('--')) flags[rest[i].slice(2)] = rest[++i] ?? true;
+  else positional.push(rest[i]);
+}
+
+async function call(method, path, body) {
+  const response = await fetch(`${API}${path}`, {
+    method,
+    headers: { authorization: `Bearer ${TOKEN}`, 'content-type': 'application/json' },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  const text = await response.text();
+  let parsed;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    console.error(`HTTP ${response.status}: ${text.slice(0, 400)}`);
+    process.exit(1);
+  }
+  if (!response.ok) {
+    console.error(`✗ ${parsed.error ?? response.status}: ${parsed.detail ?? text}`);
+    process.exit(1);
+  }
+  return parsed;
+}
+
+const date = (seconds) =>
+  seconds ? new Date(seconds * 1000).toISOString().slice(0, 10) : '—';
+
+function print(license) {
+  const mark = { active: '●', revoked: '✗', refunded: '↩' }[license.status] ?? '?';
+  console.log(`\n  ${mark}  ${license.key}`);
+  console.log(`     ${license.status.padEnd(9)} ${license.source.padEnd(7)} ${license.customer_email ?? '(no email)'}`);
+  console.log(`     issued ${date(license.created_at)}   seats ${license.devices.length}/${license.seat_limit}`);
+  if (license.note) console.log(`     note: ${license.note}`);
+  if (license.revoked_reason) console.log(`     revoked: ${license.revoked_reason}`);
+  for (const device of license.devices) {
+    console.log(`       · ${(device.deviceName ?? 'unnamed').padEnd(24)} seen ${date(device.lastSeen)}  ${device.deviceHash.slice(0, 12)}…`);
+  }
+}
+
+const usage = () => {
+  console.log(`
+DrivePurge licence admin — ${API}
+
+  issue    --email <addr> [--name <name>] [--seats 3] [--note <text>]
+  find     <email or partial key>  [--status active|revoked|refunded]
+  show     <key>
+  revoke   <key> [--reason <text>]
+  restore  <key>
+  release  <key> --device <hash>
+`);
+};
+
+const requireKey = () => {
+  const key = positional[0];
+  if (!key) {
+    console.error('A licence key is required.');
+    process.exit(2);
+  }
+  return encodeURIComponent(key);
+};
+
+switch (command) {
+  case 'issue': {
+    const { license } = await call('POST', '/v1/admin/licenses', {
+      email: flags.email,
+      name: flags.name,
+      seats: flags.seats ? Number(flags.seats) : undefined,
+      note: flags.note,
+    });
+    console.log('\n  Licence issued. Send this key to the customer:\n');
+    console.log(`      ${license.key}\n`);
+    print(license);
+    console.log();
+    break;
+  }
+
+  case 'find': {
+    const query = new URLSearchParams();
+    if (positional[0]) query.set('q', positional[0]);
+    if (flags.status) query.set('status', flags.status);
+    const { licenses } = await call('GET', `/v1/admin/licenses?${query}`);
+    if (!licenses.length) console.log('\n  Nothing matched.\n');
+    else {
+      licenses.forEach(print);
+      console.log(`\n  ${licenses.length} licence${licenses.length === 1 ? '' : 's'}.\n`);
+    }
+    break;
+  }
+
+  case 'show':
+    print((await call('GET', `/v1/admin/licenses/${requireKey()}`)).license);
+    console.log();
+    break;
+
+  case 'revoke':
+    print((await call('POST', `/v1/admin/licenses/${requireKey()}/revoke`, {
+      reason: flags.reason ?? 'revoked by admin',
+    })).license);
+    console.log();
+    break;
+
+  case 'restore':
+    print((await call('POST', `/v1/admin/licenses/${requireKey()}/revoke`, {
+      restore: true,
+    })).license);
+    console.log();
+    break;
+
+  case 'release': {
+    if (!flags.device) {
+      console.error('--device <hash> is required. Run `show <key>` to list them.');
+      process.exit(2);
+    }
+    const key = requireKey();
+    print((await call('POST',
+      `/v1/admin/licenses/${key}/seats/${encodeURIComponent(flags.device)}/release`)).license);
+    console.log();
+    break;
+  }
+
+  default:
+    usage();
+    process.exit(command ? 2 : 0);
+}

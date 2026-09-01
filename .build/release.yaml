@@ -1,0 +1,66 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "DrivePurge-arm64-apple-macosx16.0-release.exe": ["<DrivePurge-arm64-apple-macosx16.0-release.exe>"]
+  "DrivePurge-arm64-apple-macosx16.0-release.module": ["<DrivePurge-arm64-apple-macosx16.0-release.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<DrivePurge-arm64-apple-macosx16.0-release.exe>","<DrivePurge-arm64-apple-macosx16.0-release.module>"]
+  "test": ["<DrivePurge-arm64-apple-macosx16.0-release.exe>","<DrivePurge-arm64-apple-macosx16.0-release.module>"]
+default: "main"
+nodes:
+  "/Users/ritambujdubey/Documents/GitHub/ScanMac/Sources/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+commands:
+  "/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/ritambujdubey/Documents/GitHub/ScanMac/Sources/App.swift"]
+    outputs: ["/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.build/sources"]
+    description: "Write auxiliary file /Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.build/sources"
+
+  "/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.build/App.swift.o"]
+    outputs: ["/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.product/Objects.LinkFileList"
+
+  "/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/swift-version--1AB21518FC5DEDBE.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Library/Developer/CommandLineTools/usr/bin/swiftc"]
+    outputs: ["/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/swift-version--1AB21518FC5DEDBE.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/swift-version--1AB21518FC5DEDBE.txt"
+
+  "<DrivePurge-arm64-apple-macosx16.0-release.exe>":
+    tool: phony
+    inputs: ["/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge"]
+    outputs: ["<DrivePurge-arm64-apple-macosx16.0-release.exe>"]
+
+  "<DrivePurge-arm64-apple-macosx16.0-release.module>":
+    tool: phony
+    inputs: ["/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.build/App.swift.o","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/Modules/DrivePurge.swiftmodule"]
+    outputs: ["<DrivePurge-arm64-apple-macosx16.0-release.module>"]
+
+  "C.DrivePurge-arm64-apple-macosx16.0-release.exe":
+    tool: shell
+    inputs: ["/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.build/App.swift.o","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.product/Objects.LinkFileList"]
+    outputs: ["/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge"]
+    description: "Linking ./.build/arm64-apple-macosx/release/DrivePurge"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-L","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release","-o","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge","-module-name","DrivePurge","-Xlinker","-no_warn_duplicate_libraries","-emit-executable","-Xlinker","-dead_strip","-Xlinker","-alias","-Xlinker","_DrivePurge_main","-Xlinker","_main","-Xlinker","-rpath","-Xlinker","@loader_path","@/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.product/Objects.LinkFileList","-target","arm64-apple-macosx13.0","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g"]
+
+  "C.DrivePurge-arm64-apple-macosx16.0-release.module":
+    tool: shell
+    inputs: ["/Users/ritambujdubey/Documents/GitHub/ScanMac/Sources/App.swift","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/swift-version--1AB21518FC5DEDBE.txt","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.build/sources"]
+    outputs: ["/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.build/App.swift.o","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/Modules/DrivePurge.swiftmodule"]
+    description: "Compiling Swift Module 'DrivePurge' (1 sources)"
+    args: ["/Library/Developer/CommandLineTools/usr/bin/swiftc","-module-name","DrivePurge","-emit-dependencies","-emit-module","-emit-module-path","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/Modules/DrivePurge.swiftmodule","-output-file-map","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.build/output-file-map.json","-whole-module-optimization","-num-threads","8","-c","@/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/DrivePurge.build/sources","-I","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/Modules","-target","arm64-apple-macosx13.0","-O","-j8","-DSWIFT_PACKAGE","-module-cache-path","/Users/ritambujdubey/Documents/GitHub/ScanMac/.build/arm64-apple-macosx/release/ModuleCache","-parseable-output","-Xfrontend","-entry-point-function-name","-Xfrontend","DrivePurge_main","-parse-as-library","-swift-version","5","-sdk","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-g","-Xcc","-isysroot","-Xcc","/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk","-Xcc","-fPIC","-Xcc","-g","-package-name","scanmac"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/ritambujdubey/Documents/GitHub/ScanMac/Sources/","/Users/ritambujdubey/Documents/GitHub/ScanMac/Package.swift","/Users/ritambujdubey/Documents/GitHub/ScanMac/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+

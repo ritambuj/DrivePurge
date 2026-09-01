@@ -1,0 +1,46 @@
+name = "drivepurge-licensing"
+main = "src/index.ts"
+compatibility_date = "2026-08-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Filled in by `wrangler d1 create drivepurge-licenses`.
+[[d1_databases]]
+binding       = "DB"
+database_name = "drivepurge-licenses"
+database_id   = "ff65c1dd-edb0-4687-878b-2d22d9dea6eb"
+migrations_dir = "migrations"
+
+# Activation is a public, unauthenticated endpoint — it needs a ceiling.
+# Keyed per client IP and separately per licence key inside the handler.
+[[ratelimits]]
+name = "ACTIVATE_LIMITER"
+namespace_id = "1001"
+  [ratelimits.simple]
+  limit = 20
+  period = 60
+
+[[ratelimits]]
+name = "REFRESH_LIMITER"
+namespace_id = "1002"
+  [ratelimits.simple]
+  limit = 60
+  period = 60
+
+[vars]
+DODO_MODE   = "test"                   # "test" | "live"
+PRODUCT_ID  = "REPLACE_WITH_PRODUCT_ID"
+SITE_ORIGIN = "https://drivepurge.com"
+TOKEN_TTL_DAYS = "45"
+
+# Secrets — set with `wrangler secret put <NAME>`, never committed:
+#   DODO_API_KEY         Dodo dashboard → Developer → API keys
+#   DODO_WEBHOOK_SECRET  Dodo dashboard → Developer → Webhooks (whsec_…)
+#   SIGNING_KEY_PKCS8    base64 pkcs8 Ed25519 private key, from `npm run genkeys`
+#   ADMIN_TOKEN          long random string for the admin API
+
+[observability]
+enabled = true
+
+[[routes]]
+pattern = "api.drivepurge.com/*"
+zone_name = "drivepurge.com"
