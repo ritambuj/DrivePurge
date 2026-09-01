@@ -1,0 +1,51 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Swift Package Manager
+.build/
+.swiftpm/
+DerivedData/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+*.dSYM/
+
+# Release artifacts
+dist/
+
+# Cloudflare Workers
+.wrangler/
+.dev.vars
+*.local
+
+# Node / TypeScript
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+coverage/
+*.tsbuildinfo
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+!.dev.vars.example
+
+# Editor / agent tooling
+.claude/
+.cursor/
+.vscode/
+.idea/
+
+# Prototype artifacts
+Mac disk visualizer prototype/uploads/
+Mac disk visualizer prototype/.thumbnail
+
+# Logs & temp files
+*.log
+tmp/
+temp/

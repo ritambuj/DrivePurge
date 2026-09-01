@@ -1,6 +1,0 @@
-version: "Apple Swift version 6.0 (swiftlang-6.0.0.9.10 clang-1600.0.26.2)"
-options: "d5ec0e2b4690806311b38b6ad2f7fce114c731fa0506de2adcac87b9034f8bac"
-build_start_time: [1788105029, 591427000]
-build_end_time: [1788105042, 770405000]
-inputs:
-  "/Users/ritambujdubey/Documents/GitHub/ScanMac/Sources/App.swift": [1788105016, 508808007]
