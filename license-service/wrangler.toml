@@ -41,6 +41,7 @@ TOKEN_TTL_DAYS = "45"
 [observability]
 enabled = true
 
+# Custom Domain auto-manages proxied DNS for the Worker-only hostname.
 [[routes]]
-pattern = "api.drivepurge.com/*"
-zone_name = "drivepurge.com"
+pattern = "api.drivepurge.com"
+custom_domain = true
