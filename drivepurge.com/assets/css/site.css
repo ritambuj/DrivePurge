@@ -691,3 +691,23 @@ a.btn-inverse, a.btn-band {
 a.btn-inverse:hover { color: var(--color-accent); }
 a.btn-band:hover { color: var(--color-accent); }
 a.btn-band.is-quiet:hover { color: var(--color-bg); }
+
+
+/* Brand wordmark (logo assets from claude-design-assets) */
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  font-size: 0; /* hide fallback text if any */
+}
+.wordmark-mark,
+.wordmark-type {
+  display: block;
+  height: auto;
+}
+.wordmark-type {
+  width: min(160px, 42vw);
+  height: auto;
+}

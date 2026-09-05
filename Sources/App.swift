@@ -1108,7 +1108,7 @@ struct CategoryTotal: Identifiable {
     let bytes: Int64
 }
 
-enum ViewMode: String { case treemap, list }
+enum ViewMode: String { case treemap, list, applications }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MARK: - Scan engine
@@ -1679,7 +1679,7 @@ struct TitleBar: View {
             HStack(spacing: 6) {
                 ThemeSwitch(store: themeStore)
 
-                Button { engine.scanApplications() } label: {
+                Button { engine.viewMode = .applications } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "square.grid.2x2").font(.system(size: 11, weight: .medium))
                         Text("Apps").font(Theme.font(12.5))
@@ -1692,7 +1692,7 @@ struct TitleBar: View {
                 }
                 .buttonStyle(FlatButtonStyle())
                 .onHover { hoverApps = $0 }
-                .help("Scan /Applications")
+                .help("Manage and uninstall your applications")
 
                 Button { engine.toggleHeat() } label: {
                     HStack(spacing: 6) {
@@ -2434,7 +2434,12 @@ struct ViewTab: View {
 
 struct DetailView: View {
     @ObservedObject var engine: ScanEngine
+    @ObservedObject var inventory: AppInventory
     @State private var hoverBack = false
+
+    /// The Applications tab has its own toolbar, breadcrumbs make no sense in
+    /// it, and it manages its own scan.
+    private var isApplications: Bool { engine.viewMode == .applications }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -2444,20 +2449,22 @@ struct DetailView: View {
                 HStack(spacing: 2) {
                     ViewTab(title: "Treemap", active: engine.viewMode == .treemap) { engine.viewMode = .treemap }
                     ViewTab(title: "List View", active: engine.viewMode == .list) { engine.viewMode = .list }
+                    ViewTab(title: "Applications", active: isApplications) { engine.viewMode = .applications }
                 }
                 .padding(3)
                 .background(RoundedRectangle(cornerRadius: Theme.radius(8)).fill(Theme.chipBG))
                 .overlay(RoundedRectangle(cornerRadius: Theme.radius(8)).strokeBorder(Theme.border, lineWidth: Theme.ruleWidth))
 
-                breadcrumbs
+                if !isApplications { breadcrumbs }
 
                 Spacer(minLength: 8)
 
-                Text(engine.nodeCountLabel)
+                Text(isApplications ? inventory.summaryLabel : engine.nodeCountLabel)
                     .font(Theme.mono(12))
                     .foregroundColor(Theme.textDim)
                     .lineLimit(1)
 
+                if !isApplications {
                 Button { engine.goUp() } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "chevron.left").font(.system(size: 11, weight: .semibold))
@@ -2473,6 +2480,7 @@ struct DetailView: View {
                 .onHover { hoverBack = $0 }
                 .disabled(!engine.canGoUp)
                 .opacity(engine.canGoUp ? 1 : 0.45)
+                }
             }
             .padding(.horizontal, 18)
             .frame(height: 52)
@@ -2480,15 +2488,15 @@ struct DetailView: View {
 
             // Canvas / list
             ZStack {
-                if engine.viewMode == .treemap {
-                    TreemapCanvas(engine: engine)
-                } else {
-                    FileListView(engine: engine)
+                switch engine.viewMode {
+                case .treemap:      TreemapCanvas(engine: engine)
+                case .list:         FileListView(engine: engine)
+                case .applications: ApplicationsView(inventory: inventory)
                 }
             }
             .padding(14)
 
-            StatusBar(engine: engine)
+            StatusBar(engine: engine, inventory: inventory)
         }
         .background(Theme.windowBG)
     }
@@ -2514,12 +2522,14 @@ struct DetailView: View {
 
 struct StatusBar: View {
     @ObservedObject var engine: ScanEngine
+    @ObservedObject var inventory: AppInventory
     @ObservedObject private var licenseStore = LicenseStore.shared
 
     var body: some View {
         HStack(spacing: 12) {
-            Circle().fill(engine.statusColor).frame(width: 8, height: 8)
-            Text(engine.statusText)
+            Circle().fill(engine.viewMode == .applications ? Theme.accent : engine.statusColor)
+                .frame(width: 8, height: 8)
+            Text(engine.viewMode == .applications ? applicationsStatus : engine.statusText)
                 .font(Theme.mono(12))
                 .foregroundColor(Theme.textMuted)
                 .lineLimit(1)
@@ -2549,8 +2559,20 @@ struct StatusBar: View {
                         .frame(maxWidth: 420, alignment: .trailing)
                 }
                 .onTapGesture { engine.errorMessage = nil }
+            } else if let error = inventory.errorMessage {
+                HStack(spacing: 6) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 10)).foregroundColor(Theme.warning)
+                    Text(error)
+                        .font(Theme.font(11.5)).foregroundColor(Theme.warning)
+                        .lineLimit(1).truncationMode(.tail)
+                        .frame(maxWidth: 420, alignment: .trailing)
+                }
+                .onTapGesture { inventory.errorMessage = nil }
             } else {
-                Text("Click a block to zoom in · hover for quick clean")
+                Text(engine.viewMode == .applications
+                     ? "Select an app to see what it left behind"
+                     : "Click a block to zoom in · hover for quick clean")
                     .font(Theme.font(11.5))
                     .foregroundColor(Theme.textFaint)
             }
@@ -2560,6 +2582,18 @@ struct StatusBar: View {
         .background(Theme.statusBarBG)
         .overlay(alignment: .top) { Rectangle().fill(Theme.borderSoft).frame(height: Theme.ruleWidth) }
     }
+
+    private var applicationsStatus: String {
+        if let outcome = inventory.lastOutcome {
+            return "Removed \(outcome.appName) — \(Bytes.format(outcome.bytesFreed)) "
+                + "in \(outcome.itemsTrashed) item\(outcome.itemsTrashed == 1 ? "" : "s") moved to the Trash"
+        }
+        if let app = inventory.selected {
+            return "\(app.name) · \(Bytes.format(app.size)) "
+                + "+ \(Bytes.format(inventory.leftoverBytes)) left behind"
+        }
+        return inventory.summaryLabel
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -2568,6 +2602,7 @@ struct StatusBar: View {
 
 struct RootView: View {
     @StateObject private var engine = ScanEngine()
+    @StateObject private var inventory = AppInventory()
     @ObservedObject private var themeStore = ThemeStore.shared
     @ObservedObject private var licenseStore = LicenseStore.shared
     @FocusState private var searchFocused: Bool
@@ -2594,7 +2629,7 @@ struct RootView: View {
             NavigationView {
                 SidebarView(engine: engine)
                     .frame(minWidth: 262, idealWidth: 292, maxWidth: 360)
-                DetailView(engine: engine)
+                DetailView(engine: engine, inventory: inventory)
                     .frame(minWidth: 620)
             }
             .navigationViewStyle(.columns)
@@ -2629,6 +2664,12 @@ struct RootView: View {
                     .keyboardShortcut("t", modifiers: [.command, .shift])
                 Button("") { licenseStore.presentSheet() }
                     .keyboardShortcut("l", modifiers: .command)
+                Button("") { engine.viewMode = .treemap }
+                    .keyboardShortcut("1", modifiers: .command)
+                Button("") { engine.viewMode = .list }
+                    .keyboardShortcut("2", modifiers: .command)
+                Button("") { engine.viewMode = .applications }
+                    .keyboardShortcut("3", modifiers: .command)
             }
             .opacity(0)
         )
@@ -2647,6 +2688,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // awkward to drive from a script.
         if CommandLine.arguments.contains("--license-audit") {
             MainActor.assumeIsolated { AppDelegate.runLicenseAudit() }
+        }
+        if CommandLine.arguments.contains("--apps-audit") {
+            MainActor.assumeIsolated { AppDelegate.runAppsAudit() }
         }
         guard CommandLine.arguments.contains("--audit") else { return }
         let target = RootView.launchTarget
@@ -2697,6 +2741,61 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             print("seat:         \(seat.deviceName ?? "?")\(seat.isThisMac ? "  (this Mac)" : "")")
         }
         exit(store.canClean ? 0 : 1)
+    }
+
+    /// `DrivePurge --apps-audit [name]` lists installed applications, and with
+    /// an argument prints exactly what uninstalling that one would move to the
+    /// Trash. Read-only — it never removes anything.
+    @MainActor
+    static func runAppsAudit() -> Never {
+        let apps = AppDiscovery.scan()
+        let args = CommandLine.arguments
+        let filter = args.firstIndex(of: "--apps-audit").flatMap { i -> String? in
+            i + 1 < args.count && !args[i + 1].hasPrefix("-") ? args[i + 1] : nil
+        }
+
+        if let filter {
+            guard let app = apps.first(where: {
+                $0.name.localizedCaseInsensitiveContains(filter)
+            }) else {
+                print("No installed application matches “\(filter)”.")
+                exit(1)
+            }
+
+            print("\(app.name)  \(app.version ?? "—")")
+            print("  bundle:    \(app.bundleID ?? "(none)")")
+            print("  path:      \(app.displayPath)")
+            print("  size:      \(Bytes.format(app.size))")
+            print("  last used: \(app.lastUsedLabel)")
+            print("  running:   \(app.isRunning)")
+            print("  protected: \(app.isProtected ? (app.protectionReason ?? "yes") : "no")")
+
+            let leftovers = LeftoverScanner.find(for: app)
+            let total = leftovers.reduce(0) { $0 + $1.size }
+            print("\n  leftovers: \(leftovers.count) items, \(Bytes.format(total))")
+            for item in leftovers {
+                let tick = item.kind.isSafeByDefault ? "[x]" : "[ ]"
+                let admin = item.needsAdmin ? "  (needs admin)" : ""
+                print("    \(tick) \(Bytes.format(item.size).padding(toLength: 10, withPad: " ", startingAt: 0))"
+                      + "  \(item.kind.rawValue.padding(toLength: 22, withPad: " ", startingAt: 0))"
+                      + "\(item.displayPath)\(admin)")
+            }
+            print("\n  would free: \(Bytes.format(app.size + total))")
+            exit(0)
+        }
+
+        let removable = apps.filter { !$0.isProtected }
+        let stale = removable.filter(\.isStale)
+        print("\(apps.count) applications, \(removable.count) removable, "
+              + "\(Bytes.format(removable.reduce(0) { $0 + $1.size })) total")
+        print("\(stale.count) unused for six months or more\n")
+        for app in removable.prefix(25) {
+            print("  \(Bytes.format(app.size).padding(toLength: 11, withPad: " ", startingAt: 0))"
+                  + "\(app.isStale ? "· " : "  ")"
+                  + "\(app.name.padding(toLength: 34, withPad: " ", startingAt: 0))"
+                  + "\(app.lastUsedLabel)")
+        }
+        exit(0)
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #000; }
+  body { font-family: Archivo, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: #0a84ff; text-decoration: none; }
+  a:hover { color: #409cff; }
+  ::selection { background: rgba(10,132,255,.35); }
+  input { font-family: inherit; }
+  input:focus-visible, button:focus-visible { outline: 2px solid #0a84ff; outline-offset: 2px; }
+  .sb::-webkit-scrollbar { width: 8px; }
+  .sb::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 4px; }
+  .sb::-webkit-scrollbar-track { background: transparent; }
+  @keyframes popIn { from { transform: translateY(4px) scale(.96); opacity: 0 } to { transform: none; opacity: 1 } }
+  @keyframes sweep { from { transform: translateX(-100%) } to { transform: translateX(220%) } }
+</style>
+</helmet>
+<div style="width: 100%; min-height: 100vh; background: #000; display: flex; align-items: stretch; justify-content: center; padding: 0; color: #f5f5f7;">
+  <div style="width: 100%; display: flex; flex-direction: column; background: #0b0b0d; border: 1px solid #232327; box-shadow: 0 40px 120px rgba(0,0,0,.9); overflow: hidden; min-height: 100vh;">
+
+    <div style="height: 52px; flex: 0 0 52px; display: flex; align-items: center; gap: 16px; padding: 0 16px; background: linear-gradient(#1b1b1f, #16161a); border-bottom: 1px solid #26262b;">
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f57;"></div>
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #febc2e;"></div>
+        <div style="width: 12px; height: 12px; border-radius: 50%; background: #28c840;"></div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; padding-left: 8px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#0a84ff" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><circle cx="17" cy="12" r="1.6" fill="#0a84ff" stroke="none"></circle><line x1="6" y1="12" x2="12" y2="12"></line></svg>
+        <span style="font-size: 14px; font-weight: 600; letter-spacing: -.2px;">DissectMac</span>
+      </div>
+      <div style="flex: 1; display: flex; justify-content: center;">
+        <div style="position: relative; width: 100%; max-width: 520px;">
+          <svg style="position: absolute; left: 11px; top: 9px;" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6e6e75" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
+          <input placeholder="Search files and folders…" style="width: 100%; height: 33px; background: #101013; border: 1px solid #2c2c32; border-radius: 8px; padding: 0 46px 0 34px; color: #f5f5f7; font-size: 13px;" />
+          <span style="position: absolute; right: 8px; top: 7px; font-size: 11px; color: #6e6e75; border: 1px solid #2c2c32; border-radius: 4px; padding: 1px 5px;">⌘F</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <div style="display: flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 7px; background: #16161a; border: 1px solid #2a2a30; font-size: 12.5px; color: #b9b9c0;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line></svg>
+          Apps
+        </div>
+        <button onClick="{{ toggleHeat }}" style="height: 29px; padding: 0 10px; display: flex; align-items: center; gap: 6px; border-radius: 7px; border: 1px solid #2a2a30; background: #16161a; color: #b9b9c0; font-size: 12.5px; cursor: pointer;" style-hover="border-color:#3a3a44;color:#fff">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a9 9 0 0 0 0 18"></path></svg>
+          {{ heatLabel }}
+        </button>
+        <button style="height: 29px; padding: 0 14px; border-radius: 7px; border: 0; background: linear-gradient(#ffc531, #f5a623); color: #2a1c00; font-weight: 700; font-size: 12.5px; cursor: pointer;" style-hover="filter:brightness(1.08)">Upgrade to Pro</button>
+      </div>
+    </div>
+
+    <div style="flex: 1; display: flex; align-items: stretch; min-height: 0;">
+
+      <div class="sb" style="width: 292px; flex: 0 0 292px; background: #101013; border-right: 1px solid #23232a; display: flex; flex-direction: column; overflow-y: auto;">
+        <div style="padding: 14px; display: flex; flex-direction: column; gap: 9px; border-bottom: 1px solid #1e1e24;">
+          <button style="height: 42px; border: 0; border-radius: 9px; background: linear-gradient(#1e90ff, #0a6fe0); color: #fff; font-size: 13.5px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; box-shadow: 0 6px 18px rgba(10,111,224,.35);" style-hover="filter:brightness(1.08)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><circle cx="17" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg>
+            Scan Full Mac
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" opacity=".85"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+          </button>
+          <button style="height: 40px; border: 1px solid #2b2b33; border-radius: 9px; background: #17171c; color: #e8e8ec; font-size: 13.5px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;" style-hover="background:#1d1d23;border-color:#3a3a44">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 11l8-7 8 7"></path><path d="M6 10v10h12V10"></path></svg>
+            Scan Home
+          </button>
+          <button style="height: 40px; border: 1px solid #2b2b33; border-radius: 9px; background: #17171c; color: #e8e8ec; font-size: 13.5px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;" style-hover="background:#1d1d23;border-color:#3a3a44">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7h6l2 2h10v10H3z"></path></svg>
+            Choose Folder
+          </button>
+        </div>
+
+        <div style="padding: 16px 14px 14px; border-bottom: 1px solid #1e1e24;">
+          <div style="font-size: 10.5px; letter-spacing: 1.3px; color: #7b7b84; font-weight: 600; margin-bottom: 14px;">DISK STORAGE</div>
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="position: relative; width: 86px; height: 86px; flex: 0 0 86px;">
+              <svg width="86" height="86" viewBox="0 0 86 86" style="transform: rotate(-90deg);">
+                <circle cx="43" cy="43" r="35" fill="none" stroke="#212128" stroke-width="9"></circle>
+                <circle cx="43" cy="43" r="35" fill="none" stroke="{{ gaugeColor }}" stroke-width="9" stroke-linecap="round" stroke-dasharray="{{ gaugeDash }}"></circle>
+              </svg>
+              <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8e8e97" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"></rect></svg>
+                <span style="font-size: 15px; font-weight: 700; letter-spacing: -.4px;">{{ usedPct }}%</span>
+              </div>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 7px; font-size: 12.5px;">
+              <div style="display: flex; justify-content: space-between;"><span style="color: #8b8b94;">Total</span><span style="font-weight: 600;">245.11 GB</span></div>
+              <div style="display: flex; justify-content: space-between;"><span style="color: #8b8b94;">Used</span><span style="font-weight: 600; color: #ff6b6b;">{{ usedLabel }}</span></div>
+              <div style="display: flex; justify-content: space-between;"><span style="color: #8b8b94;">Free</span><span style="font-weight: 600; color: #30d158;">{{ freeLabel }}</span></div>
+            </div>
+          </div>
+          <div style="margin-top: 14px; height: 7px; border-radius: 4px; background: #1e1e24; overflow: hidden; display: flex;">
+            <div style="{{ barUsedStyle }}"></div>
+            <div style="{{ barCleanStyle }}"></div>
+          </div>
+          <div style="{{ reclaimRowStyle }}">
+            <div style="display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: #30d158; font-weight: 600;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"></path></svg>
+              {{ reclaimedLabel }} queued
+            </div>
+            <button onClick="{{ restoreAll }}" style="height: 24px; padding: 0 10px; border-radius: 6px; border: 1px solid #33333c; background: #1a1a20; color: #c9c9d1; font-size: 11.5px; cursor: pointer;" style-hover="border-color:#4a4a56;color:#fff">Restore</button>
+          </div>
+        </div>
+
+        <div style="padding: 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e1e24;">
+          <div style="display: flex; align-items: center; gap: 9px; font-size: 13px; color: #d5d5db;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b8b94" stroke-width="2" stroke-linecap="round"><path d="M4 7h16"></path><path d="M6 7v13h12V7"></path><path d="M9 7V4h6v3"></path></svg>
+            Trash <span style="color: #febc2e; font-weight: 600;">2 items</span>
+          </div>
+          <button style="height: 25px; padding: 0 11px; border-radius: 6px; border: 1px solid rgba(255,69,58,.35); background: rgba(255,69,58,.12); color: #ff6b6b; font-size: 11.5px; font-weight: 600; cursor: pointer;" style-hover="background:rgba(255,69,58,.22)">Empty</button>
+        </div>
+
+        <div style="padding: 14px; border-bottom: 1px solid #1e1e24;">
+          <div style="font-size: 10.5px; letter-spacing: 1.3px; color: #7b7b84; font-weight: 600; margin-bottom: 12px;">CATEGORIES</div>
+          <div style="display: flex; flex-direction: column; gap: 3px;">
+            <sc-for list="{{ cats }}" as="c" hint-placeholder-count="7">
+              <div onClick="{{ c.onClick }}" style="{{ c.rowStyle }}" style-hover="background:#1b1b21">
+                <div style="{{ c.dotStyle }}"></div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px;">
+                    <span style="font-size: 12.5px; font-weight: 500; color: #e4e4ea; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ c.name }}</span>
+                    <span style="font-size: 11.5px; color: #8b8b94; font-variant-numeric: tabular-nums;">{{ c.sizeLabel }}</span>
+                  </div>
+                  <div style="margin-top: 5px; height: 3px; border-radius: 2px; background: #202027; overflow: hidden;">
+                    <div style="{{ c.barStyle }}"></div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding: 14px; display: flex; flex-direction: column; gap: 10px;">
+          <div style="font-size: 10.5px; letter-spacing: 1.3px; color: #7b7b84; font-weight: 600;">DEV BLOAT FILTERS</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <sc-for list="{{ filters }}" as="f" hint-placeholder-count="6">
+              <div onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.name }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="margin-top: auto; padding: 12px 14px; border-top: 1px solid #1e1e24; font-size: 11.5px; color: #64646c;">DissectMac v3.0.0 · Prototype</div>
+      </div>
+
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; background: #0b0b0d;">
+        <div style="height: 52px; flex: 0 0 52px; display: flex; align-items: center; gap: 14px; padding: 0 18px; border-bottom: 1px solid #1e1e24;">
+          <div style="display: flex; padding: 3px; background: #16161b; border: 1px solid #26262d; border-radius: 8px; gap: 2px;">
+            <div onClick="{{ showTreemap }}" style="{{ tabTreemapStyle }}">Treemap</div>
+            <div onClick="{{ showList }}" style="{{ tabListStyle }}">List View</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden;">
+            <sc-for list="{{ crumbs }}" as="c" hint-placeholder-count="2">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <span onClick="{{ c.onClick }}" style="{{ c.style }}" style-hover="color:#fff">{{ c.name }}</span>
+                <span style="{{ c.sepStyle }}">/</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 12px; color: #6e6e77;">{{ nodeCountLabel }}</span>
+            <button onClick="{{ goUp }}" style="height: 28px; padding: 0 11px; border-radius: 7px; border: 1px solid #2a2a32; background: #16161b; color: #c3c3cb; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 6px;" style-hover="border-color:#3d3d48;color:#fff">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"></path></svg>
+              Back
+            </button>
+          </div>
+        </div>
+
+        <div style="flex: 1; min-height: 0; position: relative; padding: 14px;">
+          <div ref="{{ canvasRef }}" style="{{ canvasStyle }}">
+            <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="14">
+              <div style="{{ b.style }}" onMouseEnter="{{ b.onEnter }}" onMouseLeave="{{ onLeave }}" onClick="{{ b.onClick }}">
+                <div style="{{ b.labelStyle }}">
+                  <span style="{{ b.nameStyle }}">{{ b.name }}</span>
+                  <span style="{{ b.sizeStyle }}">{{ b.sizeLabel }}</span>
+                </div>
+                <sc-if value="{{ b.hovered }}" hint-placeholder-val="{{ false }}">
+                  <div style="{{ b.actionStyle }}">
+                    <button onClick="{{ b.onClean }}" style="height: 22px; padding: 0 9px; display: flex; align-items: center; gap: 5px; border: 0; border-radius: 5px; background: #ff453a; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,.5); animation: popIn .14s ease-out;" style-hover="background:#ff6257">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 7h16"></path><path d="M7 7v12h10V7"></path></svg>
+                      Clean
+                    </button>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="{{ listStyle }}">
+            <div class="sb" style="height: 100%; overflow-y: auto; padding-right: 6px;">
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="9">
+                <div style="{{ r.style }}" style-hover="background:#15151a">
+                  <div style="{{ r.dotStyle }}"></div>
+                  <span style="width: 84px; flex: 0 0 84px; font-size: 12.5px; color: #d9d9e0; font-variant-numeric: tabular-nums; font-weight: 600;">{{ r.sizeLabel }}</span>
+                  <span onClick="{{ r.onClick }}" style="font-size: 13px; color: #f0f0f4; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" style-hover="color:#0a84ff">{{ r.name }}</span>
+                  <div style="flex: 1; min-width: 60px; height: 6px; border-radius: 3px; background: #1b1b21; overflow: hidden;">
+                    <div style="{{ r.barStyle }}"></div>
+                  </div>
+                  <span style="{{ r.tagStyle }}">{{ r.tag }}</span>
+                  <button onClick="{{ r.onClean }}" style="height: 24px; padding: 0 10px; border-radius: 6px; border: 1px solid #33333c; background: #1a1a20; color: #c9c9d1; font-size: 11.5px; font-weight: 600; cursor: pointer;" style-hover="background:#ff453a;border-color:#ff453a;color:#fff">Clean</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 40px; flex: 0 0 40px; display: flex; align-items: center; gap: 12px; padding: 0 18px; border-top: 1px solid #1e1e24; background: #0e0e11;">
+          <div style="width: 8px; height: 8px; border-radius: 50%; background: {{ statusColor }};"></div>
+          <span style="font-size: 12px; color: #9a9aa3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums;">{{ statusText }}</span>
+          <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 11.5px; color: #64646c;">Click a block to zoom in · hover for quick clean</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;maxDepth&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:1,&quot;max&quot;:5,&quot;section&quot;:&quot;Treemap&quot;},&quot;gap&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:2,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:0,&quot;max&quot;:6,&quot;step&quot;:1,&quot;unit&quot;:&quot;px&quot;,&quot;section&quot;:&quot;Treemap&quot;},&quot;showSizes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Treemap&quot;}}">
+const PAL = {
+  system: '#0a84ff', dev: '#30d158', media: '#ff375f', docs: '#bf5af2',
+  cache: '#64d2ff', downloads: '#ffd60a', apps: '#ff9f0a', other: '#8e8e93'
+};
+const CAT_NAMES = {
+  system: 'System & Library', dev: 'Developer', media: 'Media', docs: 'Documents',
+  cache: 'Caches & Junk', downloads: 'Downloads', apps: 'Applications', other: 'Other'
+};
+
+const TREE = [
+  ['Library', 43.53, 'system', [
+    ['Application Support', 12.74, 'system', [
+      ['Google', 4.69, 'system', [['Chrome', 3.85, 'system', [['Default', 2.34], ['Service Worker', 0.86], ['GPUCache', 0.42], ['Crashpad', 0.23]]], ['Drive', 0.84]]],
+      ['Cursor', 3.27, 'dev', [['User', 1.86, 'dev', [['globalStorage', 1.67], ['state.vscdb', 0.19]]], ['Cache', 0.9], ['snapshots', 0.51]]],
+      ['Claude', 1.62, 'dev', [['Cache', 0.94], ['IndexedDB', 0.41], ['Local Storage', 0.27]]],
+      ['Postman', 1.21, 'dev', [['Partitions', 0.78], ['IndexedDB', 0.43]]],
+      ['Code', 1.4, 'dev', [['CachedData', 0.81], ['User', 0.59]]],
+      ['com.colliderli.iina', 0.55]
+    ]],
+    ['Group Containers', 10.06, 'media', [
+      ['group.net.whatsapp', 9.8, 'media', [['Message', 9.22, 'media', [['Media', 9.22, 'media', [['9199582', 3.1], ['91879', 1.4], ['91829', 1.2], ['12034', 1.1], ['16819', 0.9], ['91639', 0.8], ['21722', 0.72]]]]]]],
+      ['group.com.apple.notes', 0.26]
+    ]],
+    ['Mobile Documents', 6.28, 'docs', [['iCloud~Accounts', 5.8, 'docs', [['backup', 5.8]]], ['Desktop sync', 0.48]]],
+    ['Developer', 8.69, 'dev', [['CoreSimulator', 8.12, 'dev', [['Caches', 6.83, 'dev', [['dyld 25D2128', 6.83]]], ['Devices', 1.29]]], ['Xcode DerivedData', 0.57]]],
+    ['Containers', 2.94, 'apps', [['com.apple.mail', 0.9], ['com.spotify.client', 0.67], ['com.figma.Desktop', 0.62], ['com.docker.docker', 0.75]]],
+    ['Caches', 2.44, 'cache', [['Google Chrome', 1.31, 'cache', [['Default', 0.98], ['Code Cache', 0.33]]], ['com.apple.Safari', 0.62], ['Homebrew', 0.51]]]
+  ]],
+  ['Documents', 22.04, 'docs', [
+    ['GitHub', 22.04, 'docs', [
+      ['BharatVPN', 4.4, 'dev', [['backend', 1.62, 'dev', [['node_modules', 1.29]]], ['mobile', 1.44, 'dev', [['.angular cache', 0.92]]], ['admin', 0.86], ['infra', 0.68]]],
+      ['Arrow Logic Puzzle', 3.28, 'dev', [['build', 2.98, 'dev', [['app', 2.87, 'dev', [['intermediates', 2.49]]]]], ['assets', 0.3]]],
+      ['Lekhpal AI', 2.95, 'dev', [['build', 2.42, 'dev', [['app', 2.22]]], ['data', 0.32], ['web', 0.21]]],
+      ['atlas-ingest', 2.18, 'dev', [['node_modules', 1.31], ['.next', 0.52], ['core', 0.35]]],
+      ['caller-agent', 1.62, 'dev', [['node_modules', 1.02], ['packages', 0.6]]],
+      ['byadab-net', 1.44, 'dev', [['node_modules', 0.94], ['.next', 0.5]]],
+      ['heygen-tools', 1.24, 'dev', [['data', 0.72], ['web', 0.52]]],
+      ['fileandstyle', 1.18, 'dev', [['node_modules', 0.79], ['public', 0.39]]],
+      ['archive-2024', 3.75, 'other', [['releases.zip', 2.1], ['assets.tar.gz', 1.65]]]
+    ]]
+  ]],
+  ['Applications', 18.62, 'apps', [
+    ['Xcode.app', 7.9], ['Docker.app', 2.4], ['Figma.app', 1.35], ['Chrome.app', 1.28],
+    ['Final Cut Pro.app', 3.1], ['Slack.app', 0.72], ['Spotify.app', 0.61], ['Other apps', 1.26]
+  ]],
+  ['Photos Library', 15.21, 'media', [['originals', 11.8, 'media', [['2026', 4.2], ['2025', 3.9], ['2024', 3.7]]], ['resources', 2.6], ['database', 0.81]]],
+  ['Movies', 12.44, 'media', [['Screen Recordings', 5.6, 'media', [['demo-final.mov', 2.4], ['walkthrough.mov', 1.8], ['bug-repro.mov', 1.4]]], ['Exports', 4.1], ['iMovie Library', 2.74]]],
+  ['.gradle', 11.81, 'cache', [
+    ['caches', 8.93, 'cache', [['9.3.1', 5.98, 'cache', [['transforms', 5.74, 'cache', [['13664a7', 2.1], ['3b18594', 1.9], ['transforms-3', 1.74]]]]], ['modules-2', 1.62, 'cache', [['files-2.1', 1.4]]], ['8.14.3', 0.82], ['8.11.1', 0.51]]],
+    ['wrapper', 2.76, 'cache', [['dists', 2.76, 'cache', [['gradle-9.3.1', 1.57], ['gradle-8.14', 0.72], ['gradle-8.11', 0.47]]]]]
+  ]],
+  ['.npm', 7.88, 'cache', [['_cacache', 6.4, 'cache', [['content-v2', 3.17], ['index-v5', 1.9], ['sha512', 1.33]]], ['_logs', 0.36], ['_npx', 1.12]]],
+  ['System', 11.92, 'system', [['Library', 8.4, 'system', [['Caches', 3.1], ['Frameworks', 3.0], ['Assets', 2.3]]], ['Volumes', 3.52]]],
+  ['Downloads', 5.11, 'downloads', [['open-source-bundle.dmg', 1.42], ['PRESS-KIT.zip', 1.05], ['Xcode_16.4.xip', 1.24], ['dataset-v3.csv', 0.62], ['misc', 0.78]]],
+  ['Docker', 9.31, 'dev', [['vms/0/data', 8.2], ['overlay2', 1.11]]],
+  ['.nvm', 1.7, 'cache', [['versions/node', 1.53], ['.cache', 0.17]]],
+  ['.cursor', 1.36, 'dev', [['extensions', 1.02], ['projects', 0.34]]],
+  ['.android', 1.29, 'dev', [['avd', 0.86], ['sdcard.img', 0.43]]],
+  ['.ollama', 1.12, 'other', [['models', 1.12]]],
+  ['.local', 1.43, 'cache', [['share', 1.35]]]
+];
+
+function hexToRgb(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
+function mix(a, b, t) {
+  const A = hexToRgb(a), B = hexToRgb(b);
+  return 'rgb(' + A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(',') + ')';
+}
+function rgba(h, a) { const c = hexToRgb(h); return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')'; }
+function fmt(v) { return v >= 1 ? v.toFixed(v >= 10 ? 2 : 2) + ' GB' : Math.round(v * 1024) + ' MB'; }
+
+const HEAT = ['#3a7bd5', '#00c2a8', '#30d158', '#ffd60a', '#ff9f0a', '#ff453a'];
+function heatColor(f) {
+  const t = Math.min(1, Math.pow(f, 0.42)) * (HEAT.length - 1);
+  const i = Math.min(HEAT.length - 2, Math.floor(t));
+  return mix(HEAT[i], HEAT[i + 1], t - i);
+}
+
+class Component extends DCLogic {
+  state = { w: 1000, h: 620, hover: null, cleaned: {}, view: 'treemap', path: [], cat: null, heat: false, filters: {} };
+
+  constructor(p) {
+    super(p);
+    this.canvasRef = React.createRef();
+    let uid = 0;
+    const build = (arr, cat, parent) => arr.map(r => {
+      const node = { id: 'n' + (uid++), name: r[0], v: r[1], cat: (typeof r[2] === 'string' ? r[2] : cat), parent: parent };
+      const kids = Array.isArray(r[2]) ? r[2] : r[3];
+      node.children = kids ? build(kids, node.cat, node) : null;
+      return node;
+    });
+    this.root = { id: 'root', name: 'Macintosh HD', v: 226.95, cat: 'other', parent: null, children: build(TREE, 'other', null) };
+    this.byId = {};
+    const walk = n => { this.byId[n.id] = n; (n.children || []).forEach(walk); };
+    walk(this.root);
+  }
+
+  componentDidMount() {
+    const el = this.canvasRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    this.ro = new ResizeObserver(() => {
+      const r = el.getBoundingClientRect();
+      if (Math.abs(r.width - this.state.w) > 1 || Math.abs(r.height - this.state.h) > 1)
+        this.setState({ w: r.width, h: r.height });
+    });
+    this.ro.observe(el);
+    const r = el.getBoundingClientRect();
+    if (r.width) this.setState({ w: r.width, h: r.height });
+  }
+  componentWillUnmount() { if (this.ro) this.ro.disconnect(); }
+
+  size(n) {
+    if (this.state.cleaned[n.id]) return 0;
+    if (!n.children) return n.v;
+    let anyCleaned = false;
+    const walk = x => { if (this.state.cleaned[x.id]) anyCleaned = true; (x.children || []).forEach(walk); };
+    walk(n);
+    if (!anyCleaned) return n.v;
+    const kidSum = n.children.reduce((s, c) => s + this.size(c), 0);
+    const declaredKids = n.children.reduce((s, c) => s + c.v, 0);
+    return Math.max(0, n.v - declaredKids) + kidSum;
+  }
+
+  current() {
+    let n = this.root;
+    this.state.path.forEach(id => { if (this.byId[id]) n = this.byId[id]; });
+    return n;
+  }
+
+  squarify(items, rect) {
+    const out = [];
+    let x = rect.x, y = rect.y, w = rect.w, h = rect.h;
+    let remaining = items.reduce((s, i) => s + i.v, 0);
+    let i = 0;
+    const worst = (row, sum, rem) => {
+      const frac = sum / rem;
+      const len = (w >= h ? w * frac : h * frac), other = (w >= h ? h : w);
+      let wr = 1;
+      row.forEach(it => { const seg = other * (it.v / sum); const r = Math.max(len / seg, seg / len); if (r > wr) wr = r; });
+      return wr;
+    };
+    while (i < items.length && remaining > 0) {
+      let row = [], sum = 0, best = Infinity, j = i;
+      while (j < items.length) {
+        const s2 = sum + items[j].v;
+        const r = worst(row.concat([items[j]]), s2, remaining);
+        if (row.length === 0 || r <= best) { row.push(items[j]); sum = s2; best = r; j++; } else break;
+      }
+      const frac = sum / remaining;
+      if (w >= h) {
+        const rw = w * frac; let ry = y;
+        row.forEach(it => { const rh = h * (it.v / sum); out.push({ node: it.node, x: x, y: ry, w: rw, h: rh }); ry += rh; });
+        x += rw; w -= rw;
+      } else {
+        const rh = h * frac; let rx = x;
+        row.forEach(it => { const rw2 = w * (it.v / sum); out.push({ node: it.node, x: rx, y: y, w: rw2, h: rh }); rx += rw2; });
+        y += rh; h -= rh;
+      }
+      remaining -= sum; i = j;
+    }
+    return out;
+  }
+
+  buildBlocks(W, H) {
+    const maxDepth = Math.max(1, Math.min(5, this.props.maxDepth ?? 3));
+    const pad = Math.max(0, Math.min(6, this.props.gap ?? 2));
+    const heat = this.state.heat;
+    const cur = this.current();
+    const total = Math.max(0.01, this.size(cur));
+    const out = [];
+    const walk = (node, rect, depth) => {
+      const kids = (node.children || []).map(c => ({ node: c, v: this.size(c) })).filter(k => k.v > 0.001).sort((a, b) => b.v - a.v);
+      if (!kids.length) return;
+      const head = (rect.h > 46 && rect.w > 64 && depth > 0) ? 19 : (depth === 0 ? 0 : 0);
+      const inner = { x: rect.x + pad, y: rect.y + head + pad, w: Math.max(1, rect.w - pad * 2), h: Math.max(1, rect.h - head - pad * 2) };
+      if (inner.w < 8 || inner.h < 8) return;
+      this.squarify(kids, inner).forEach(r => {
+        const n = r.node, frac = this.size(n) / total;
+        const dimmed = this.state.cat && n.cat !== this.state.cat;
+        const base = heat ? heatColor(frac) : PAL[n.cat] || PAL.other;
+        const shade = [0.82, 0.72, 0.6, 0.48, 0.36, 0.28][Math.min(5, depth)];
+        const leaf = !n.children || depth + 1 >= maxDepth;
+        const fill = heat ? mix('#0b0b0d', base, leaf ? 0.72 : 0.34) : mix('#0b0b0d', base, leaf ? 1 - shade + 0.12 : 1 - shade);
+        const hovered = this.state.hover === n.id;
+        out.push({
+          node: n, depth: depth, frac: frac, w: r.w, h: r.h,
+          style: {
+            position: 'absolute', left: (r.x / W * 100) + '%', top: (r.y / H * 100) + '%',
+            width: (r.w / W * 100) + '%', height: (r.h / H * 100) + '%',
+            background: fill, border: '1px solid ' + (hovered ? '#ffffff' : rgba(heat ? '#ffffff' : base, leaf ? 0.42 : 0.3)),
+            boxShadow: hovered ? '0 0 0 1px rgba(255,255,255,.5), 0 8px 26px rgba(0,0,0,.6)' : 'none',
+            borderRadius: '3px', boxSizing: 'border-box', overflow: 'hidden', cursor: 'pointer',
+            opacity: dimmed ? 0.18 : 1, zIndex: depth * 2 + (hovered ? 40 : 0),
+            transition: 'left .38s cubic-bezier(.2,.8,.2,1), top .38s cubic-bezier(.2,.8,.2,1), width .38s cubic-bezier(.2,.8,.2,1), height .38s cubic-bezier(.2,.8,.2,1), opacity .22s ease, background .25s ease'
+          },
+          accent: base, leaf: leaf, hovered: hovered
+        });
+        if (!leaf) walk(n, r, depth + 1);
+      });
+    };
+    walk(cur, { x: 0, y: 0, w: W, h: H }, 0);
+    return out;
+  }
+
+  renderVals() {
+    const S = this.state;
+    const W = Math.max(120, S.w), H = Math.max(120, S.h);
+    const cleanedTotal = Object.keys(S.cleaned).reduce((s, id) => s + (this.byId[id] ? this.byId[id].v : 0), 0);
+    const used = 226.95 - cleanedTotal;
+    const usedPct = Math.round(used / 245.11 * 100);
+    const C = 2 * Math.PI * 35;
+
+    const raw = this.buildBlocks(W, H);
+    const blocks = raw.map(b => {
+      const n = b.node;
+      const showLabel = b.w > 44 && b.h > 15;
+      const showSize = (this.props.showSizes ?? true) && b.w > 118 && b.h > 15;
+      return {
+        name: showLabel ? n.name : '',
+        sizeLabel: showSize ? fmt(this.size(n)) : '',
+        style: b.style,
+        hovered: b.hovered && b.w > 74 && b.h > 30,
+        labelStyle: { display: 'flex', alignItems: 'center', gap: '8px', padding: b.leaf ? '3px 5px' : '0 5px', height: b.leaf ? 'auto' : '18px', background: b.leaf ? 'transparent' : 'rgba(0,0,0,.22)' },
+        nameStyle: { fontSize: b.depth === 0 ? '11.5px' : '10.5px', fontWeight: b.depth === 0 ? 600 : 500, color: 'rgba(255,255,255,.94)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', textShadow: '0 1px 2px rgba(0,0,0,.6)', letterSpacing: '-.1px' },
+        sizeStyle: { marginLeft: 'auto', fontSize: '10.5px', color: 'rgba(255,255,255,.62)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap', textShadow: '0 1px 2px rgba(0,0,0,.6)' },
+        actionStyle: { position: 'absolute', right: '4px', bottom: '4px', display: 'flex', gap: '4px' },
+        onEnter: () => this.setState({ hover: n.id }),
+        onClick: e => { e.stopPropagation(); if (n.children) this.setState({ path: this.pathTo(n), hover: null }); },
+        onClean: e => { e.stopPropagation(); this.setState(st => ({ cleaned: Object.assign({}, st.cleaned, { [n.id]: true }), hover: null })); }
+      };
+    });
+
+    const cur = this.current();
+    const crumbs = [{ node: this.root }].concat(this.state.path.map(id => ({ node: this.byId[id] }))).map((c, i, arr) => ({
+      name: c.node.name,
+      style: { fontSize: '12.5px', color: i === arr.length - 1 ? '#f0f0f4' : '#8b8b94', fontWeight: i === arr.length - 1 ? 600 : 400, cursor: 'pointer', whiteSpace: 'nowrap' },
+      sepStyle: { fontSize: '12px', color: '#3c3c44', display: i === arr.length - 1 ? 'none' : 'inline' },
+      onClick: () => this.setState({ path: this.state.path.slice(0, i) })
+    }));
+
+    const catTotals = {};
+    const acc = n => { if (n !== this.root) { catTotals[n.cat] = (catTotals[n.cat] || 0) + (n.children ? 0 : this.size(n)); } (n.children || []).forEach(acc); };
+    this.root.children.forEach(t => { catTotals[t.cat] = (catTotals[t.cat] || 0) + this.size(t); });
+    const maxCat = Math.max.apply(null, Object.values(catTotals));
+    const cats = Object.keys(catTotals).sort((a, b) => catTotals[b] - catTotals[a]).map(k => ({
+      name: CAT_NAMES[k], sizeLabel: fmt(catTotals[k]),
+      rowStyle: { display: 'flex', alignItems: 'center', gap: '10px', padding: '7px 8px', borderRadius: '7px', cursor: 'pointer', background: S.cat === k ? '#1d1d24' : 'transparent', border: '1px solid ' + (S.cat === k ? '#32323c' : 'transparent') },
+      dotStyle: { width: '9px', height: '9px', flex: '0 0 9px', borderRadius: '2px', background: PAL[k], boxShadow: '0 0 10px ' + rgba(PAL[k], 0.5) },
+      barStyle: { height: '100%', width: (catTotals[k] / maxCat * 100) + '%', background: PAL[k], borderRadius: '2px', transition: 'width .3s ease' },
+      onClick: () => this.setState({ cat: S.cat === k ? null : k })
+    }));
+
+    const filterNames = ['node_modules', 'Xcode', 'Gradle', 'Docker', 'Simulators', 'Disk Images', 'Archives'];
+    const filters = filterNames.map(f => ({
+      name: f,
+      style: { padding: '5px 10px', borderRadius: '6px', fontSize: '11.5px', cursor: 'pointer', border: '1px solid ' + (S.filters[f] ? 'rgba(10,132,255,.5)' : '#2a2a32'), background: S.filters[f] ? 'rgba(10,132,255,.16)' : '#16161b', color: S.filters[f] ? '#6fb6ff' : '#a0a0a9', fontWeight: S.filters[f] ? 600 : 400 },
+      onClick: () => this.setState(st => ({ filters: Object.assign({}, st.filters, { [f]: !st.filters[f] }) }))
+    }));
+
+    const kids = (cur.children || []).map(c => ({ n: c, v: this.size(c) })).filter(k => k.v > 0.001).sort((a, b) => b.v - a.v);
+    const maxKid = kids.length ? kids[0].v : 1;
+    const rows = kids.map(k => ({
+      name: k.n.name, sizeLabel: fmt(k.v),
+      style: { display: 'flex', alignItems: 'center', gap: '12px', padding: '9px 10px', borderRadius: '8px', borderBottom: '1px solid #17171c' },
+      dotStyle: { width: '8px', height: '8px', flex: '0 0 8px', borderRadius: '2px', background: PAL[k.n.cat] || PAL.other },
+      barStyle: { height: '100%', width: (k.v / maxKid * 100) + '%', background: 'linear-gradient(90deg,' + rgba(PAL[k.n.cat] || PAL.other, 0.55) + ',' + (PAL[k.n.cat] || PAL.other) + ')', borderRadius: '3px' },
+      tag: k.n.cat === 'cache' || k.n.cat === 'dev' ? 'Safe' : 'Caution',
+      tagStyle: { flex: '0 0 62px', textAlign: 'center', fontSize: '11px', fontWeight: 600, padding: '3px 0', borderRadius: '5px', background: (k.n.cat === 'cache' || k.n.cat === 'dev') ? 'rgba(48,209,88,.14)' : 'rgba(255,159,10,.14)', color: (k.n.cat === 'cache' || k.n.cat === 'dev') ? '#41d96a' : '#ffb340', border: '1px solid ' + ((k.n.cat === 'cache' || k.n.cat === 'dev') ? 'rgba(48,209,88,.3)' : 'rgba(255,159,10,.3)') },
+      onClick: () => { if (k.n.children) this.setState({ path: this.pathTo(k.n) }); },
+      onClean: e => { e.stopPropagation(); this.setState(st => ({ cleaned: Object.assign({}, st.cleaned, { [k.n.id]: true }) })); }
+    }));
+
+    const hov = S.hover && this.byId[S.hover];
+    const tab = active => ({ padding: '5px 13px', borderRadius: '6px', fontSize: '12.5px', fontWeight: active ? 600 : 500, cursor: 'pointer', color: active ? '#fff' : '#9a9aa3', background: active ? 'linear-gradient(#2a6fdb,#1a5cc4)' : 'transparent' });
+
+    return {
+      blocks: blocks, crumbs: crumbs, cats: cats, filters: filters, rows: rows,
+      canvasRef: this.canvasRef,
+      canvasStyle: { position: 'relative', width: '100%', height: '100%', background: '#0e0e12', border: '1px solid #1f1f26', borderRadius: '8px', overflow: 'hidden', display: S.view === 'treemap' ? 'block' : 'none' },
+      listStyle: { position: 'absolute', inset: '14px', display: S.view === 'list' ? 'block' : 'none' },
+      tabTreemapStyle: tab(S.view === 'treemap'), tabListStyle: tab(S.view === 'list'),
+      showTreemap: () => this.setState({ view: 'treemap' }), showList: () => this.setState({ view: 'list' }),
+      goUp: () => this.setState({ path: S.path.slice(0, -1) }),
+      onLeave: () => this.setState({ hover: null }),
+      toggleHeat: () => this.setState({ heat: !S.heat }),
+      heatLabel: S.heat ? 'Heat' : 'Category',
+      restoreAll: () => this.setState({ cleaned: {} }),
+      usedPct: usedPct, usedLabel: fmt(used), freeLabel: fmt(245.11 - used),
+      gaugeColor: usedPct > 85 ? '#ff6b6b' : usedPct > 65 ? '#ffb340' : '#30d158',
+      gaugeDash: (C * usedPct / 100).toFixed(1) + ' ' + C.toFixed(1),
+      barUsedStyle: { width: (used / 245.11 * 100) + '%', height: '100%', background: 'linear-gradient(90deg,#ff4d4d,#ff8a8a)', transition: 'width .4s ease' },
+      barCleanStyle: { width: (cleanedTotal / 245.11 * 100) + '%', height: '100%', background: 'repeating-linear-gradient(45deg,#30d158,#30d158 4px,#1f8f3c 4px,#1f8f3c 8px)', transition: 'width .4s ease' },
+      reclaimRowStyle: { display: cleanedTotal > 0 ? 'flex' : 'none', alignItems: 'center', justifyContent: 'space-between', marginTop: '12px', padding: '8px 10px', borderRadius: '8px', background: 'rgba(48,209,88,.09)', border: '1px solid rgba(48,209,88,.28)' },
+      reclaimedLabel: fmt(cleanedTotal),
+      nodeCountLabel: (cur.children || []).length + ' items · ' + fmt(this.size(cur)),
+      statusColor: hov ? (PAL[hov.cat] || PAL.other) : '#3c3c44',
+      statusText: hov ? this.fullPath(hov) + '  —  ' + fmt(this.size(hov)) : 'Ready · ' + fmt(this.size(cur)) + ' mapped in ' + this.current().name
+    };
+  }
+
+  pathTo(n) { const out = []; let c = n; while (c && c !== this.root) { out.unshift(c.id); c = c.parent; } return out; }
+  fullPath(n) { const out = []; let c = n; while (c) { out.unshift(c.name); c = c.parent; } return out.join(' / '); }
+}
+</script>
+</body>
+</html>

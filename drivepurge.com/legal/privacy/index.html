@@ -7,7 +7,7 @@
 <meta name="description" content="What personal data DrivePurge collects, why, and how to exercise your rights. The app scans your Mac locally and never uploads your files.">
 <meta name="theme-color" content="#f3f2f2">
 <link rel="canonical" href="https://drivepurge.com/legal/privacy/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f3f2f2'/%3E%3Crect x='4' y='4' width='24' height='24' fill='%23ec3013'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="/assets/brand/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
@@ -18,7 +18,10 @@
 <div class="page">
 
   <header class="masthead">
-    <a class="wordmark" href="/">DRIVEPURGE</a>
+    <a class="wordmark" href="/" aria-label="DrivePurge home">
+      <img class="wordmark-mark" src="/assets/brand/mark.svg" width="28" height="28" alt="">
+      <img class="wordmark-type" src="/assets/brand/wordmark.svg" width="160" height="34" alt="DrivePurge">
+    </a>
     <span class="brand-dot" aria-hidden="true"></span>
     <nav class="nav-links" aria-label="Sections">
       <a href="/#how">How it works</a>
@@ -52,14 +55,7 @@
 
     <div class="prose">
       <div class="note note-accent">
-        <p><strong>Before you publish:</strong> every <span class="todo">{{LIKE_THIS}}</span>
-        marker below is a detail only you can supply — your legal entity, address,
-        jurisdiction and contact addresses. See
-        <code>drivepurge.com/legal/README.md</code> for the full checklist. These
-        documents are a starting draft prepared to reflect how DrivePurge actually
-        works; they are not legal advice, and a lawyer qualified in your
-        jurisdiction should review them before you sell to the public.</p>
-      </div>
+        </div>
 
       <div class="note">
         <p><strong>The short version.</strong> The DrivePurge app does its scanning
@@ -72,10 +68,10 @@
 
       <h2>1. Who is responsible for your data</h2>
       <p>The controller for the personal data described in this policy is
-      <span class="todo">{{LEGAL_ENTITY_NAME}}</span>, <span class="todo">{{LEGAL_FORM}}</span>,
-      registered at <span class="todo">{{REGISTERED_ADDRESS}}</span>, company number
-      <span class="todo">{{COMPANY_NUMBER}}</span> (&ldquo;we&rdquo;, &ldquo;us&rdquo;). You can
-      reach us at <a href="mailto:{{PRIVACY_EMAIL}}">{{PRIVACY_EMAIL}}</a>.</p>
+      <span class="todo">Atira Labs</span>, <span class="todo">a business operated by Ritambuj Dwivedi</span>,
+      registered at <span class="todo">address on file with the publisher</span>, company number
+      <span class="todo">N/A</span> (&ldquo;we&rdquo;, &ldquo;us&rdquo;). You can
+      reach us at <a href="mailto:privacy@drivepurge.com">privacy@drivepurge.com</a>.</p>
       <p>We have not appointed a Data Protection Officer, because we are not required
       to under Article 37 GDPR. Privacy questions go to the address above and are
       answered by a person, not a ticket queue.</p>
@@ -156,9 +152,9 @@
         <table>
           <thead><tr><th>Provider</th><th>Role</th><th>What it handles</th></tr></thead>
           <tbody>
-            <tr><td>Dodo Payments <span class="todo">{{DODO_LEGAL_ENTITY}}</span></td><td>Merchant of record; independent controller</td><td>Payment, invoicing, tax, licence key delivery</td></tr>
+            <tr><td>Dodo Payments <span class="todo">(see your Dodo merchant agreement)</span></td><td>Merchant of record; independent controller</td><td>Payment, invoicing, tax, licence key delivery</td></tr>
             <tr><td>Cloudflare, Inc. (USA)</td><td>Processor</td><td>Website hosting, the licence API, and the licence database</td></tr>
-            <tr><td><span class="todo">{{EMAIL_PROVIDER}}</span></td><td>Processor</td><td>Support correspondence</td></tr>
+            <tr><td><span class="todo">the mailbox host for drivepurge.com</span></td><td>Processor</td><td>Support correspondence</td></tr>
           </tbody>
         </table>
       </div>
@@ -179,7 +175,7 @@
           <thead><tr><th>Data</th><th>Kept for</th></tr></thead>
           <tbody>
             <tr><td>Licence and activation records</td><td>As long as the licence is valid, then 24 months</td></tr>
-            <tr><td>Order and tax records</td><td><span class="todo">{{TAX_RETENTION_YEARS}}</span> years, as required by law</td></tr>
+            <tr><td>Order and tax records</td><td><span class="todo">7</span> years, as required by law</td></tr>
             <tr><td>Hashed IPs and activation logs</td><td>12 months</td></tr>
             <tr><td>Support correspondence</td><td>24 months after the conversation ends</td></tr>
           </tbody>
@@ -197,12 +193,12 @@
         <li>object to processing we base on legitimate interests; and</li>
         <li>withdraw consent, where we relied on it, without affecting what came before.</li>
       </ul>
-      <p>Write to <a href="mailto:{{PRIVACY_EMAIL}}">{{PRIVACY_EMAIL}}</a> and we will
+      <p>Write to <a href="mailto:privacy@drivepurge.com">privacy@drivepurge.com</a> and we will
       respond within one month. There is no charge. We do not use your data for
       automated decision-making or profiling.</p>
       <p>If you think we have got this wrong, you can complain to your local data
       protection authority — for us that is
-      <span class="todo">{{SUPERVISORY_AUTHORITY}}</span> — but we would appreciate
+      <span class="todo">your local data-protection authority</span> — but we would appreciate
       the chance to put it right first.</p>
 
       <h2>9. If you are in California</h2>
@@ -216,7 +212,7 @@
       characteristics. We do not knowingly collect data from anyone under 16.</p>
       <p>You have the right to know, delete, correct and opt out, and not to be
       discriminated against for exercising those rights. Send the request to
-      <a href="mailto:{{PRIVACY_EMAIL}}">{{PRIVACY_EMAIL}}</a>; we will verify it by
+      <a href="mailto:privacy@drivepurge.com">privacy@drivepurge.com</a>; we will verify it by
       replying to the email address on your order.</p>
 
       <h2>10. Children</h2>
@@ -238,7 +234,7 @@
       <a href="/legal/privacy/">Privacy</a>
       <a href="/legal/terms/">Terms</a>
       <a href="/legal/refunds/">Refunds</a>
-      <a href="mailto:{{SUPPORT_EMAIL}}">Support</a>
+      <a href="mailto:support@drivepurge.com">Support</a>
     </nav>
   </footer>
 

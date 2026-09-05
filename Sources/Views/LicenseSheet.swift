@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 
 struct LicenseSheet: View {
     @ObservedObject var store: LicenseStore
@@ -54,9 +55,7 @@ struct LicenseSheet: View {
 
     private var header: some View {
         HStack(spacing: 10) {
-            Image(systemName: store.canClean ? "checkmark.seal.fill" : "lock")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(store.canClean ? Theme.accent : Theme.textMuted)
+            brandMark
             Text(store.isLicensed ? "Your licence" : "Unlock cleaning")
                 .font(Theme.font(15, .semibold))
                 .foregroundColor(Theme.textPrimary)
@@ -64,6 +63,41 @@ struct LicenseSheet: View {
         }
         .padding(.horizontal, 20)
         .frame(height: 52)
+    }
+
+    /// Brand mark from Bundle.module Resources; SF Symbol fallback if missing.
+    @ViewBuilder
+    private var brandMark: some View {
+        if let image = Self.loadBrandMarkImage() {
+            Image(nsImage: image)
+                .resizable()
+                .interpolation(.high)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 22, height: 22)
+                .accessibilityHidden(true)
+        } else {
+            Image(systemName: store.canClean ? "checkmark.seal.fill" : "lock")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(store.canClean ? Theme.accent : Theme.textMuted)
+                .frame(width: 22, height: 22)
+        }
+    }
+
+    private static func loadBrandMarkImage() -> NSImage? {
+        let candidates: [(name: String, ext: String)] = [
+            ("Mark", "svg"),
+            ("AppIcon", "png"),
+        ]
+        for c in candidates {
+            let urls = [
+                Bundle.module.url(forResource: c.name, withExtension: c.ext, subdirectory: "Resources"),
+                Bundle.module.url(forResource: c.name, withExtension: c.ext),
+            ]
+            for url in urls.compactMap({ $0 }) {
+                if let image = NSImage(contentsOf: url) { return image }
+            }
+        }
+        return nil
     }
 
     // MARK: - Not yet licensed

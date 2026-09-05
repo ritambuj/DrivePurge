@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-8b32e6f7-f6ac-465c-8340-be5061421b63/styles.css">
+<script src="_ds/modernist-8b32e6f7-f6ac-465c-8340-be5061421b63/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); text-wrap: pretty; }
+  a { color: var(--color-accent-700); text-decoration: none; }
+  a:hover { color: var(--color-accent); }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  @media (max-width: 1080px) {
+    .dp-hero, .dp-split, .dp-price { grid-template-columns: minmax(0, 1fr) !important; }
+    .dp-price > div + div { border-left: 0 !important; border-top: 2px solid var(--color-text) !important; }
+    .dp-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; justify-content: start !important; }
+    .dp-nav-links { display: none !important; }
+  }
+  @media (max-width: 720px) {
+    .dp-feature { grid-template-columns: minmax(0, 1fr) !important; gap: 12px !important; }
+    .dp-privacy-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  }
+</style>
+</helmet>
+<div style="background: var(--color-bg); min-height: 100vh;">
+
+  <div style="display: flex; align-items: center; gap: 28px; padding: 0 max(28px, calc((100% - 1240px) / 2 + 28px)); height: 66px; border-bottom: 2px solid var(--color-divider); background: var(--color-bg); position: sticky; top: 0; z-index: 20;">
+    <span style="font-family: var(--font-heading); font-weight: 800; font-size: 19px; letter-spacing: -0.03em;">DRIVEPURGE</span>
+    <span style="width: 10px; height: 10px; background: var(--color-accent);"></span>
+    <div class="dp-nav-links" style="display: flex; gap: 22px; font-size: 13.5px; letter-spacing: 0.02em;">
+      <a href="#how" style="color: var(--color-neutral-800);" style-hover="color:var(--color-accent)">How it works</a>
+      <a href="#map" style="color: var(--color-neutral-800);" style-hover="color:var(--color-accent)">What's safe to delete</a>
+      <a href="#privacy" style="color: var(--color-neutral-800);" style-hover="color:var(--color-accent)">Privacy</a>
+      <a href="#pricing" style="color: var(--color-neutral-800);" style-hover="color:var(--color-accent)">Pricing</a>
+    </div>
+    <div style="margin-left: auto; display: flex; gap: var(--space-3); align-items: center;">
+      <span style="font-size: 13px; color: var(--color-neutral-700);">For macOS 13 and later</span>
+      <button type="button" class="btn btn-primary">Download free</button>
+    </div>
+  </div>
+
+  <div style="max-width: 1240px; margin: 0 auto; padding: 0 28px;">
+
+    <div class="dp-hero" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: center; padding: 84px 0 72px;">
+      <div>
+        <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 600; margin-bottom: 20px;">Mac storage cleaner</div>
+        <h1 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(44px, 5.4vw, 76px); line-height: 1.03; letter-spacing: -0.03em; margin: 0 0 -0.02em -0.058em;">
+          <span style="display: block;">Free up space</span>
+          <span style="display: block;">on your Mac.</span>
+          <span style="display: block; color: var(--color-accent);">Safely.</span>
+        </h1>
+        <p style="font-size: 17px; line-height: 1.65; max-width: 46ch; color: var(--color-neutral-800); margin: 30px 0 0;">DrivePurge scans your Mac in about a minute and shows you exactly what is taking up space. Big files, old caches, forgotten downloads — see them at a glance and remove them in one click, without touching anything your Mac needs. Everything happens on your computer, so your files stay private.</p>
+        <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: 30px;">
+          <button type="button" class="btn btn-primary" style="height: 46px; padding: 0 20px; font-size: 15px;">Download free</button>
+          <button type="button" class="btn btn-ghost" style="height: 46px; padding: 0 20px; font-size: 15px;">See how it works</button>
+        </div>
+        <div style="display: flex; gap: 26px; margin-top: 26px; font-size: 13px; color: var(--color-neutral-700);">
+          <span>Free to scan</span><span>No account needed</span><span>Your files stay on your Mac</span><span>Works offline</span>
+        </div>
+      </div>
+
+      <div style="border: 2px solid var(--color-text); background: var(--color-neutral-100);">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-bottom: 2px solid var(--color-text);">
+          <span style="width: 9px; height: 9px; background: var(--color-accent);"></span>
+          <span style="font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-800); font-weight: 600;">Macintosh HD · {{ scannedLabel }} scanned</span>
+          <span style="margin-left: auto; font-size: 11.5px; color: var(--color-neutral-700); font-variant-numeric: tabular-nums;">{{ hoverLabel }}</span>
+        </div>
+        <div style="{{ mapStyle }}">
+          <sc-for list="{{ tiles }}" as="t" hint-placeholder-count="12">
+            <div onMouseEnter="{{ t.onEnter }}" onMouseLeave="{{ onLeave }}" onClick="{{ t.onToggle }}" style="{{ t.style }}">
+              <div style="{{ t.labelStyle }}">{{ t.name }}</div>
+              <div style="{{ t.sizeStyle }}">{{ t.sizeLabel }}</div>
+              <sc-if value="{{ t.hovered }}" hint-placeholder-val="{{ false }}">
+                <div style="{{ t.btnWrapStyle }}"><span style="{{ t.btnStyle }}">{{ t.btnLabel }}</span></div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px; padding: 11px 12px; border-top: 2px solid var(--color-text);">
+          <div style="flex: 1; height: 8px; background: var(--color-neutral-300); overflow: hidden; display: flex;">
+            <div style="{{ barStyle }}"></div>
+          </div>
+          <span style="font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: {{ barColor }};">{{ reclaimLabel }}</span>
+        </div>
+      </div>
+    </div>
+
+    <hr style="height: 2px; border: 0; margin: 0; background: var(--color-divider);" />
+
+    <div class="dp-stats" style="display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 36px; padding: 60px 0;">
+      <div>
+        <div style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(32px, 3.2vw, 46px); line-height: 1.1; color: var(--color-accent); margin-left: -0.045em;">41 s</div>
+        <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-700); margin-top: 12px;">Average time to scan a full Mac</div>
+      </div>
+      <div>
+        <div style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(32px, 3.2vw, 46px); line-height: 1.1; color: var(--color-accent); margin-left: -0.045em;">64 GB</div>
+        <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-700); margin-top: 12px;">Average space freed on the first clean</div>
+      </div>
+      <div>
+        <div style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(32px, 3.2vw, 46px); line-height: 1.1; color: var(--color-accent); margin-left: -0.045em;">100%</div>
+        <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-700); margin-top: 12px;">Of your data stays on your Mac</div>
+      </div>
+      <div>
+        <div style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(32px, 3.2vw, 46px); line-height: 1.1; color: var(--color-accent); margin-left: -0.045em;">€34</div>
+        <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-700); margin-top: 12px;">One-time payment. No subscription.</div>
+      </div>
+    </div>
+
+    <hr style="height: 2px; border: 0; margin: 0; background: var(--color-divider);" />
+
+    <div id="how" style="padding: 72px 0 60px;">
+      <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 600; margin-bottom: 34px;">How it works</div>
+      <div class="dp-feature" style="display: grid; grid-template-columns: minmax(64px, 120px) minmax(0, 380px) minmax(0, 1fr); gap: 28px clamp(24px, 4vw, 72px); align-items: baseline; padding: 34px 0;">
+        <div style="font-family: var(--font-heading); font-weight: 800; font-size: 15px; font-variant-numeric: tabular-nums;">01</div>
+        <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 24px; line-height: 1.2; letter-spacing: -0.01em; margin: 0;">Scan your Mac</h2>
+        <p style="font-size: 15.5px; line-height: 1.72; color: var(--color-neutral-800); margin: 0; max-width: 52ch;">Open the app and click Scan. In about a minute DrivePurge checks every folder on your disk and adds up how much space each one is using. There is nothing to set up and no account to create.</p>
+      </div>
+      <div class="dp-feature" style="display: grid; grid-template-columns: minmax(64px, 120px) minmax(0, 380px) minmax(0, 1fr); gap: 28px clamp(24px, 4vw, 72px); align-items: baseline; padding: 34px 0; border-top: 2px solid var(--color-divider);">
+        <div style="font-family: var(--font-heading); font-weight: 800; font-size: 15px; font-variant-numeric: tabular-nums;">02</div>
+        <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 24px; line-height: 1.2; letter-spacing: -0.01em; margin: 0;">See where your space went</h2>
+        <p style="font-size: 15.5px; line-height: 1.72; color: var(--color-neutral-800); margin: 0; max-width: 52ch;">Instead of a long list of file names, you get a simple picture of your disk: the bigger the block, the more space that folder is using. Click any block to look inside it, and click Back to come out again.</p>
+      </div>
+      <div class="dp-feature" style="display: grid; grid-template-columns: minmax(64px, 120px) minmax(0, 380px) minmax(0, 1fr); gap: 28px clamp(24px, 4vw, 72px); align-items: baseline; padding: 34px 0; border-top: 2px solid var(--color-divider);">
+        <div style="font-family: var(--font-heading); font-weight: 800; font-size: 15px; font-variant-numeric: tabular-nums;">03</div>
+        <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 24px; line-height: 1.2; letter-spacing: -0.01em; margin: 0;">Clean up safely</h2>
+        <p style="font-size: 15.5px; line-height: 1.72; color: var(--color-neutral-800); margin: 0; max-width: 52ch;">Point at anything you want gone and click Clean. Everything you select is listed for review first and then moved to your Trash, so nothing disappears by accident. DrivePurge never touches system files or anything your Mac needs to run.</p>
+      </div>
+    </div>
+
+    <hr style="height: 2px; border: 0; margin: 0; background: var(--color-divider);" />
+
+    <div id="map" class="dp-split" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 30px clamp(24px, 5vw, 88px); align-items: start; padding: 68px 0;">
+      <div>
+        <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 600; margin-bottom: 20px;">Safe to delete</div>
+        <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 32px; line-height: 1.15; letter-spacing: -0.015em; margin: 0;">It knows which files are<br />safe to remove</h2>
+        <p style="font-size: 15.5px; line-height: 1.72; color: var(--color-neutral-800); margin: 24px 0 0; max-width: 46ch;">DrivePurge recognises the files that quietly pile up on every Mac: app caches, old downloads, leftover installers, duplicate photos, huge videos, developer files. It marks them as safe to remove and leaves everything else alone. Pick a category below to see how much space you would get back.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <sc-for list="{{ chips }}" as="c" hint-placeholder-count="10">
+          <div onClick="{{ c.onClick }}" style="{{ c.style }}">
+            <span>{{ c.name }}</span>
+            <span style="{{ c.sizeStyle }}">{{ c.size }}</span>
+          </div>
+        </sc-for>
+        <div style="width: 100%; font-size: 13px; color: var(--color-neutral-700); margin-top: 8px; font-variant-numeric: tabular-nums;">{{ chipSummary }}</div>
+      </div>
+    </div>
+
+    <hr style="height: 2px; border: 0; margin: 0; background: var(--color-divider);" />
+
+    <div id="privacy" class="dp-split" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 30px clamp(24px, 5vw, 88px); align-items: start; padding: 68px 0;">
+      <div>
+        <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 600; margin-bottom: 20px;">Your privacy</div>
+        <h2 style="font-family: var(--font-heading); font-weight: 800; font-size: 32px; line-height: 1.15; letter-spacing: -0.015em; margin: 0;">Your files never<br />leave your Mac</h2>
+        <p style="font-size: 15.5px; line-height: 1.72; color: var(--color-neutral-800); margin: 24px 0 0; max-width: 46ch;">DrivePurge does all of its work on your computer. There is no upload, no cloud account and nothing sent back to us, so your file names and folders stay yours. You can even use it with the Wi-Fi switched off.</p>
+      </div>
+      <div class="dp-privacy-grid" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 2px solid var(--color-text); border-left: 2px solid var(--color-text);">
+        <div style="padding: 22px 20px 24px; border-right: 2px solid var(--color-text); border-bottom: 2px solid var(--color-text);">
+          <div style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 700;">No account</div>
+          <p style="font-size: 14.5px; line-height: 1.65; color: var(--color-neutral-800); margin: 10px 0 0;">Download it, open it, scan. You never have to sign up or log in.</p>
+        </div>
+        <div style="padding: 22px 20px 24px; border-right: 2px solid var(--color-text); border-bottom: 2px solid var(--color-text);">
+          <div style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 700;">No tracking</div>
+          <p style="font-size: 14.5px; line-height: 1.65; color: var(--color-neutral-800); margin: 10px 0 0;">No analytics, no ads, no profile. We collect nothing about you.</p>
+        </div>
+        <div style="padding: 22px 20px 24px; border-right: 2px solid var(--color-text); border-bottom: 2px solid var(--color-text);">
+          <div style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 700;">Made in Europe</div>
+          <p style="font-size: 14.5px; line-height: 1.65; color: var(--color-neutral-800); margin: 10px 0 0;">Prices include VAT, and you get a proper invoice for your business. Pay by card, SEPA, iDEAL or Bancontact.</p>
+        </div>
+        <div style="padding: 22px 20px 24px; border-right: 2px solid var(--color-text); border-bottom: 2px solid var(--color-text);">
+          <div style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 700;">Your language</div>
+          <p style="font-size: 14.5px; line-height: 1.65; color: var(--color-neutral-800); margin: 10px 0 0;">Available in English, German, French, Spanish, Italian and Dutch.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr style="height: 2px; border: 0; margin: 0; background: var(--color-divider);" />
+
+    <div id="pricing" style="padding: 68px 0 20px;">
+      <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 600; margin-bottom: 34px;">Simple pricing</div>
+      <p style="font-size: 15.5px; line-height: 1.7; color: var(--color-neutral-800); margin: -18px 0 30px; max-width: 56ch;">Scanning is free — download DrivePurge and see what is using your space. Pay once, whenever you are ready to start cleaning.</p>
+      <div class="dp-price" style="display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); border: 2px solid var(--color-text);">
+        <div style="padding: 40px 36px 42px; background: var(--color-accent); color: var(--color-bg);">
+          <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; opacity: .92;">One-time payment</div>
+          <div style="display: flex; align-items: baseline; gap: 14px; margin: 22px 0 0;">
+            <div style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(52px, 5.4vw, 76px); line-height: .95; letter-spacing: -0.03em; margin-left: -0.045em;">€34</div>
+            <div style="font-size: 14px; line-height: 1.5; opacity: .92;">once<br />VAT included</div>
+          </div>
+          <p style="font-size: 15.5px; line-height: 1.7; margin: 24px 0 0; max-width: 34ch; opacity: .96;">Pay once and DrivePurge is yours for good. No subscription, no yearly renewal, no upgrade fees — including on your next Mac.</p>
+          <div style="margin-top: 30px; display: inline-flex;">
+            <button type="button" style="height: 48px; padding: 0 22px; border: 2px solid var(--color-bg); background: transparent; color: var(--color-bg); font-family: var(--font-body); font-size: 15px; font-weight: 700; text-align: left; cursor: pointer;" style-hover="background:var(--color-bg);color:var(--color-accent)">Buy now — €34</button>
+          </div>
+          <div style="font-size: 13px; margin-top: 18px; opacity: .9;">Not happy? Full refund within 14 days, no questions asked.</div>
+        </div>
+        <div style="padding: 40px 36px 42px; border-left: 2px solid var(--color-text);">
+          <div style="font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-700); font-weight: 700;">What you get</div>
+          <div style="margin-top: 22px; display: flex; flex-direction: column;">
+            <div style="display: flex; gap: 14px; padding: 13px 0; border-bottom: 2px solid var(--color-neutral-200);"><span style="width: 10px; height: 10px; flex: 0 0 10px; background: var(--color-accent); margin-top: 6px;"></span><span style="font-size: 14.5px; line-height: 1.6;">Every feature, unlocked: unlimited scans and unlimited cleaning.</span></div>
+            <div style="display: flex; gap: 14px; padding: 13px 0; border-bottom: 2px solid var(--color-neutral-200);"><span style="width: 10px; height: 10px; flex: 0 0 10px; background: var(--color-accent); margin-top: 6px;"></span><span style="font-size: 14.5px; line-height: 1.6;">Use it on up to three Macs that you own.</span></div>
+            <div style="display: flex; gap: 14px; padding: 13px 0; border-bottom: 2px solid var(--color-neutral-200);"><span style="width: 10px; height: 10px; flex: 0 0 10px; background: var(--color-accent); margin-top: 6px;"></span><span style="font-size: 14.5px; line-height: 1.6;">All future updates included, free. We do not charge for new versions.</span></div>
+            <div style="display: flex; gap: 14px; padding: 13px 0;"><span style="width: 10px; height: 10px; flex: 0 0 10px; background: var(--color-accent); margin-top: 6px;"></span><span style="font-size: 14.5px; line-height: 1.6;">Friendly email support from the small team who built the app.</span></div>
+          </div>
+          <p style="font-size: 13.5px; line-height: 1.65; color: var(--color-neutral-700); margin: 22px 0 0;">Buying for a team of ten or more? Email us and we will sort out one invoice for everyone.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 64px 0 76px;">
+      <blockquote style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.28; letter-spacing: -0.015em; max-width: 34ch; margin: 0; text-indent: -0.496em;">“My MacBook kept saying the disk was full and I was ready to buy a new one. DrivePurge found 71 GB I did not need and cleared it in two minutes.”</blockquote>
+      <figcaption style="font-size: 15.5px; color: var(--color-neutral-700); margin: 40px 0 0; text-indent: -1.209em;">— Lena B., designer, Leipzig</figcaption>
+    </div>
+  </div>
+
+  <div style="background: var(--color-accent); color: var(--color-bg);">
+    <div style="max-width: 1240px; margin: 0 auto; padding: 78px 28px;">
+      <h3 style="font-family: var(--font-heading); font-weight: 800; font-size: clamp(34px, 4.2vw, 56px); line-height: 1.06; letter-spacing: -0.015em; margin: 0 0 0 -0.058em;">
+        <span style="display: block;">Get your storage back.</span>
+        <span style="display: block;">It takes about a minute.</span>
+      </h3>
+      <div style="display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: 38px;">
+        <button type="button" style="height: 46px; padding: 0 20px; border: 2px solid var(--color-bg); background: transparent; color: var(--color-bg); font-family: var(--font-body); font-size: 15px; font-weight: 600; text-align: left; cursor: pointer;" style-hover="background:var(--color-bg);color:var(--color-accent)">Download free</button>
+        <button type="button" style="height: 46px; padding: 0 20px; border: 2px solid transparent; background: transparent; color: var(--color-bg); font-family: var(--font-body); font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; opacity: .85;" style-hover="opacity:1;border-color:var(--color-bg)">Buy now — €34</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width: 1240px; margin: 0 auto; padding: 34px 28px 56px; display: flex; gap: 20px; flex-wrap: wrap; font-size: 13px; color: var(--color-neutral-700);">
+    <span>DrivePurge · drivepurge.com — the safe way to free up space on your Mac</span>
+    <span style="margin-left: auto; display: flex; gap: 18px;">
+      <a href="#how" style="color: var(--color-neutral-700);" style-hover="color:var(--color-accent)">Changelog</a>
+      <a href="#map" style="color: var(--color-neutral-700);" style-hover="color:var(--color-accent)">Docs</a>
+      <a href="#privacy" style="color: var(--color-neutral-700);" style-hover="color:var(--color-accent)">Privacy</a>
+      <a href="#pricing" style="color: var(--color-neutral-700);" style-hover="color:var(--color-accent)">Support</a>
+    </span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const TILES = [
+  { name: 'App support files', v: 43.5, r: false },
+  { name: 'Developer files', v: 22.0, r: true },
+  { name: 'Apps', v: 18.6, r: false },
+  { name: 'Photos', v: 15.2, r: false },
+  { name: 'Videos', v: 12.4, r: false },
+  { name: 'App caches', v: 11.8, r: true },
+  { name: 'macOS system', v: 11.9, r: false },
+  { name: 'Old backups', v: 9.3, r: true },
+  { name: 'Duplicate photos', v: 7.9, r: true },
+  { name: 'Downloads', v: 5.1, r: true },
+  { name: 'Trash', v: 1.4, r: true },
+  { name: 'Documents', v: 3.4, r: false }
+];
+const CHIPS = [
+  ['App caches', '11.8 GB'], ['Old downloads', '9.1 GB'], ['Leftover installers', '3.7 GB'],
+  ['Duplicate photos', '6.4 GB'], ['Large videos', '12.4 GB'], ['Old backups', '8.1 GB'],
+  ['Unused apps', '4.2 GB'], ['Mail attachments', '2.4 GB'], ['Trash', '3.8 GB'], ['Developer files', '18.4 GB']
+];
+
+class Component extends DCLogic {
+  state = { hover: null, queued: {}, chips: { 'App caches': true, 'Old downloads': true, 'Large videos': true } };
+
+  layout(W, H) {
+    const items = TILES.map((t, i) => ({ t: t, i: i, v: t.v })).sort((a, b) => b.v - a.v);
+    const out = [];
+    let x = 0, y = 0, w = W, h = H;
+    let rem = items.reduce((s, i) => s + i.v, 0), k = 0;
+    const worst = (row, sum) => {
+      const frac = sum / rem, len = (w >= h ? w * frac : h * frac), other = (w >= h ? h : w);
+      let wr = 1;
+      row.forEach(it => { const seg = other * (it.v / sum); const r = Math.max(len / seg, seg / len); if (r > wr) wr = r; });
+      return wr;
+    };
+    while (k < items.length && rem > 0) {
+      let row = [], sum = 0, best = Infinity, j = k;
+      while (j < items.length) {
+        const s2 = sum + items[j].v, r = worst(row.concat([items[j]]), s2);
+        if (!row.length || r <= best) { row.push(items[j]); sum = s2; best = r; j++; } else break;
+      }
+      const frac = sum / rem;
+      if (w >= h) {
+        const rw = w * frac; let ry = y;
+        row.forEach(it => { const rh = h * (it.v / sum); out.push({ it: it, x: x, y: ry, w: rw, h: rh }); ry += rh; });
+        x += rw; w -= rw;
+      } else {
+        const rh = h * frac; let rx = x;
+        row.forEach(it => { const rw = w * (it.v / sum); out.push({ it: it, x: rx, y: y, w: rw, h: rh }); rx += rw; });
+        y += rh; h -= rh;
+      }
+      rem -= sum; k = j;
+    }
+    return out;
+  }
+
+  renderVals() {
+    const S = this.state, W = 100, H = 100;
+    const INK = ['var(--color-neutral-900)', 'var(--color-neutral-700)', 'var(--color-neutral-800)', 'var(--color-neutral-900)', 'var(--color-neutral-700)', 'var(--color-neutral-800)'];
+    const rects = this.layout(W, H);
+    const tiles = rects.map((r, idx) => {
+      const t = r.it.t, queued = !!S.queued[t.name], hovered = S.hover === t.name;
+      const red = t.r;
+      const bg = queued ? 'var(--color-accent-200)' : red ? (hovered ? 'var(--color-accent-600)' : 'var(--color-accent)') : INK[idx % INK.length];
+      const ink = queued ? 'var(--color-accent-800)' : 'var(--color-bg)';
+      const big = r.w > 20 && r.h > 16;
+      return {
+        name: r.w > 11 && r.h > 9 ? t.name : '',
+        sizeLabel: big ? t.v.toFixed(1) + ' GB' : '',
+        hovered: hovered && r.w > 16 && r.h > 18,
+        btnLabel: queued ? 'Selected ✓' : 'Clean',
+        style: {
+          position: 'absolute', left: r.x + '%', top: r.y + '%', width: r.w + '%', height: r.h + '%',
+          boxSizing: 'border-box', border: '2px solid var(--color-neutral-100)', background: bg, color: ink,
+          padding: '7px 8px', overflow: 'hidden', cursor: 'pointer',
+          outline: hovered ? '2px solid var(--color-text)' : 'none', outlineOffset: '-2px',
+          transition: 'background .2s ease, color .2s ease', zIndex: hovered ? 5 : 1
+        },
+        labelStyle: { fontSize: '11.5px', fontWeight: 600, letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', lineHeight: 1.2 },
+        sizeStyle: { fontSize: '11px', opacity: .78, fontVariantNumeric: 'tabular-nums', marginTop: '3px' },
+        btnWrapStyle: { position: 'absolute', left: '8px', bottom: '7px' },
+        btnStyle: { display: 'inline-block', padding: '3px 8px', fontSize: '10.5px', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', background: queued ? 'var(--color-accent-800)' : 'var(--color-bg)', color: queued ? 'var(--color-bg)' : 'var(--color-accent-700)' },
+        onEnter: () => this.setState({ hover: t.name }),
+        onToggle: () => this.setState(st => {
+          const q = Object.assign({}, st.queued);
+          if (q[t.name]) delete q[t.name]; else q[t.name] = true;
+          return { queued: q };
+        })
+      };
+    });
+
+    const queuedGB = Object.keys(S.queued).reduce((s, n) => { const t = TILES.find(x => x.name === n); return s + (t ? t.v : 0); }, 0);
+    const chipTotal = CHIPS.filter(c => S.chips[c[0]]).reduce((s, c) => s + parseFloat(c[1]), 0);
+    const hov = S.hover && TILES.find(t => t.name === S.hover);
+
+    return {
+      tiles: tiles,
+      onLeave: () => this.setState({ hover: null }),
+      mapStyle: { position: 'relative', width: '100%', aspectRatio: '16 / 11', background: 'var(--color-neutral-100)' },
+      scannedLabel: '226.9 GB',
+      hoverLabel: hov ? hov.name + ' · ' + hov.v.toFixed(1) + ' GB' : 'Point at a block to see its size',
+      barStyle: { width: Math.min(100, queuedGB / 226.9 * 100 + (queuedGB ? 2 : 0)) + '%', height: '100%', background: 'var(--color-accent)', transition: 'width .3s ease' },
+      barColor: queuedGB ? 'var(--color-accent-700)' : 'var(--color-neutral-700)',
+      reclaimLabel: queuedGB ? queuedGB.toFixed(1) + ' GB selected' : 'Nothing selected yet',
+      chips: CHIPS.map(c => {
+        const on = !!S.chips[c[0]];
+        return {
+          name: c[0], size: c[1],
+          style: { display: 'inline-flex', alignItems: 'center', gap: '10px', padding: '9px 13px', fontSize: '13.5px', fontWeight: on ? 600 : 400, cursor: 'pointer', border: '2px solid ' + (on ? 'var(--color-accent)' : 'var(--color-neutral-400)'), background: on ? 'var(--color-accent-100)' : 'transparent', color: on ? 'var(--color-accent-800)' : 'var(--color-neutral-800)', transition: 'background .15s ease, border-color .15s ease' },
+          sizeStyle: { fontSize: '12px', fontVariantNumeric: 'tabular-nums', color: on ? 'var(--color-accent-700)' : 'var(--color-neutral-600)' },
+          onClick: () => this.setState(st => Object.assign({}, { chips: Object.assign({}, st.chips, { [c[0]]: !st.chips[c[0]] }) }))
+        };
+      }),
+      chipSummary: chipTotal > 0 ? chipTotal.toFixed(1) + ' GB in ' + CHIPS.filter(c => S.chips[c[0]]).length + ' categories — all safe to remove' : 'Pick a category to see how much space it is using'
+    };
+  }
+}
+</script>
+</body>
+</html>

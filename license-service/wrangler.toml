@@ -27,8 +27,8 @@ namespace_id = "1002"
   period = 60
 
 [vars]
-DODO_MODE   = "test"                   # "test" | "live"
-PRODUCT_ID  = "REPLACE_WITH_PRODUCT_ID"
+DODO_MODE   = "live"                   # "test" | "live"
+PRODUCT_ID  = "pdt_0Nmy0dma6x5yb5QlZ3jmU"
 SITE_ORIGIN = "https://drivepurge.com"
 TOKEN_TTL_DAYS = "45"
 

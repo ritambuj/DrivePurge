@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/modernist-8b32e6f7-f6ac-465c-8340-be5061421b63/styles.css">
+<script src="_ds/modernist-8b32e6f7-f6ac-465c-8340-be5061421b63/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--color-bg); }
+  body { font-family: var(--font-body); color: var(--color-text); -webkit-font-smoothing: antialiased; }
+  a { color: var(--color-accent-700); text-decoration: none; }
+  a:hover { color: var(--color-accent); }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+  ::selection { background: var(--color-accent-200); }
+  .sb::-webkit-scrollbar { width: 10px; }
+  .sb::-webkit-scrollbar-thumb { background: var(--color-neutral-400); }
+  .sb::-webkit-scrollbar-track { background: var(--color-neutral-200); }
+  @keyframes popIn { from { opacity: 0; transform: translateY(3px) } to { opacity: 1; transform: none } }
+</style>
+</helmet>
+<div style="width: 100%; height: 100vh; max-height: 100vh; background: var(--color-neutral-300); display: flex; padding: 0; overflow: hidden;">
+  <div style="width: 100%; height: 100%; display: flex; flex-direction: column; background: var(--color-bg); border: 2px solid var(--color-text); overflow: hidden;">
+
+    <div style="height: 54px; flex: 0 0 54px; display: flex; align-items: center; gap: 18px; padding: 0 16px; border-bottom: 2px solid var(--color-text); background: var(--color-bg);">
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <span style="width: 11px; height: 11px; background: var(--color-accent);"></span>
+        <span style="width: 11px; height: 11px; background: var(--color-neutral-400);"></span>
+        <span style="width: 11px; height: 11px; background: var(--color-neutral-400);"></span>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 10px; padding-left: 6px;">
+        <span style="font-family: var(--font-heading); font-weight: 800; font-size: 16px; letter-spacing: -0.03em;">DRIVEPURGE</span>
+        <span style="font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-700);">Macintosh HD</span>
+      </div>
+      <div style="flex: 1; display: flex; justify-content: center;">
+        <div style="position: relative; width: 100%; max-width: 460px;">
+          <input class="input" placeholder="Search files and folders" style="width: 100%; height: 34px; padding-right: 52px;" />
+          <span style="position: absolute; right: 9px; top: 8px; font-size: 11px; letter-spacing: 0.06em; color: var(--color-neutral-700); border: 2px solid var(--color-neutral-400); padding: 0 4px;">⌘F</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: var(--space-2);">
+        <button type="button" onClick="{{ toggleHeat }}" class="btn btn-secondary" style="height: 34px; font-size: 13px;">{{ heatLabel }}</button>
+        <button type="button" class="btn btn-primary" style="height: 34px; font-size: 13px;">Purge queue · {{ queueCount }}</button>
+      </div>
+    </div>
+
+    <div style="flex: 1; display: flex; min-height: 0;">
+
+      <div class="sb" style="width: 300px; flex: 0 0 300px; min-height: 0; border-right: 2px solid var(--color-text); display: flex; flex-direction: column; overflow-y: auto; background: var(--color-neutral-100);">
+
+        <div style="padding: 16px; display: flex; flex-direction: column; gap: var(--space-2); border-bottom: 2px solid var(--color-divider);">
+          <button type="button" class="btn btn-primary btn-block" style="height: 44px;">Scan full Mac</button>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2);">
+            <button type="button" class="btn btn-secondary btn-block">Home</button>
+            <button type="button" class="btn btn-secondary btn-block">Folder…</button>
+          </div>
+        </div>
+
+        <div style="padding: 18px 16px; border-bottom: 2px solid var(--color-divider);">
+          <div style="font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 600; margin-bottom: 16px;">Disk storage</div>
+          <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 12px;">
+            <div>
+              <div style="font-family: var(--font-heading); font-weight: 800; font-size: 42px; line-height: .92; letter-spacing: -0.03em; margin-left: -0.045em; color: {{ gaugeColor }};">{{ usedPct }}%</div>
+              <div style="font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-700); margin-top: 8px;">Of 245.11 GB used</div>
+            </div>
+            <div style="text-align: right; font-size: 12.5px; font-variant-numeric: tabular-nums; line-height: 1.9;">
+              <div><span style="color: var(--color-neutral-700);">Used </span><strong>{{ usedLabel }}</strong></div>
+              <div><span style="color: var(--color-neutral-700);">Free </span><strong>{{ freeLabel }}</strong></div>
+            </div>
+          </div>
+          <div style="margin-top: 16px; height: 12px; border: 2px solid var(--color-text); display: flex; background: var(--color-bg);">
+            <div style="{{ barUsedStyle }}"></div>
+            <div style="{{ barCleanStyle }}"></div>
+          </div>
+          <div style="{{ reclaimRowStyle }}">
+            <span style="font-size: 12.5px; font-weight: 700; color: var(--color-accent-800);">{{ reclaimedLabel }} queued</span>
+            <button type="button" onClick="{{ restoreAll }}" class="btn btn-ghost" style="height: 28px; font-size: 12px; padding: 0 10px;">Restore</button>
+          </div>
+        </div>
+
+        <div style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--color-divider);">
+          <span style="font-size: 13px;">Trash <span style="color: var(--color-accent-700); font-weight: 700;">2 items</span></span>
+          <button type="button" class="btn btn-ghost" style="height: 28px; font-size: 12px; padding: 0 10px;">Empty</button>
+        </div>
+
+        <div style="padding: 18px 16px; border-bottom: 2px solid var(--color-divider);">
+          <div style="font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 600; margin-bottom: 14px;">Categories</div>
+          <div style="display: flex; flex-direction: column;">
+            <sc-for list="{{ cats }}" as="c" hint-placeholder-count="7">
+              <div onClick="{{ c.onClick }}" style="{{ c.rowStyle }}">
+                <div style="{{ c.markStyle }}"></div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px;">
+                    <span style="font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ c.name }}</span>
+                    <span style="font-size: 12px; color: var(--color-neutral-700); font-variant-numeric: tabular-nums;">{{ c.sizeLabel }}</span>
+                  </div>
+                  <div style="margin-top: 7px; height: 4px; background: var(--color-neutral-300);">
+                    <div style="{{ c.barStyle }}"></div>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding: 18px 16px;">
+          <div style="font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 600; margin-bottom: 14px;">Classifiers</div>
+          <div style="display: flex; flex-wrap: wrap; gap: var(--space-2);">
+            <sc-for list="{{ filters }}" as="f" hint-placeholder-count="7">
+              <div onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.name }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="margin-top: auto; padding: 14px 16px; border-top: 2px solid var(--color-divider); font-size: 11.5px; color: var(--color-neutral-700);">DrivePurge 1.0 · drivepurge.com</div>
+      </div>
+
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+        <div style="height: 50px; flex: 0 0 50px; display: flex; align-items: center; gap: 16px; padding: 0 18px; border-bottom: 2px solid var(--color-text);">
+          <div class="seg" style="display: flex;">
+            <div onClick="{{ showTreemap }}" style="{{ tabTreemapStyle }}">Treemap</div>
+            <div onClick="{{ showList }}" style="{{ tabListStyle }}">List</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; min-width: 0; overflow: hidden;">
+            <sc-for list="{{ crumbs }}" as="c" hint-placeholder-count="2">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.name }}</span>
+                <span style="{{ c.sepStyle }}">/</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-left: auto; display: flex; align-items: center; gap: 14px;">
+            <span style="font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-neutral-700);">{{ nodeCountLabel }}</span>
+            <button type="button" onClick="{{ goUp }}" class="btn btn-secondary" style="height: 30px; font-size: 12.5px;">Back</button>
+          </div>
+        </div>
+
+        <div style="flex: 1; min-height: 0; position: relative; padding: 16px;">
+          <div ref="{{ canvasRef }}" style="{{ canvasStyle }}">
+            <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="14">
+              <div style="{{ b.style }}" onMouseEnter="{{ b.onEnter }}" onMouseLeave="{{ onLeave }}" onClick="{{ b.onClick }}">
+                <div style="{{ b.labelStyle }}">
+                  <span style="{{ b.nameStyle }}">{{ b.name }}</span>
+                  <span style="{{ b.sizeStyle }}">{{ b.sizeLabel }}</span>
+                </div>
+                <sc-if value="{{ b.hovered }}" hint-placeholder-val="{{ false }}">
+                  <div style="{{ b.actionStyle }}">
+                    <button type="button" onClick="{{ b.onClean }}" style="{{ b.cleanBtnStyle }}">Purge</button>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="{{ listStyle }}">
+            <div class="sb" style="height: 100%; overflow-y: auto; border: 2px solid var(--color-text); background: var(--color-bg);">
+              <sc-for list="{{ rows }}" as="r" hint-placeholder-count="9">
+                <div style="{{ r.style }}">
+                  <div style="{{ r.markStyle }}"></div>
+                  <span style="width: 88px; flex: 0 0 88px; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums;">{{ r.sizeLabel }}</span>
+                  <span onClick="{{ r.onClick }}" style="font-size: 13.5px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ r.name }}</span>
+                  <div style="flex: 1; min-width: 60px; height: 8px; background: var(--color-neutral-200);">
+                    <div style="{{ r.barStyle }}"></div>
+                  </div>
+                  <span style="{{ r.tagStyle }}">{{ r.tag }}</span>
+                  <button type="button" onClick="{{ r.onClean }}" class="btn btn-ghost" style="height: 28px; font-size: 12px; padding: 0 12px;">Purge</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="height: 42px; flex: 0 0 42px; display: flex; align-items: center; gap: 12px; padding: 0 18px; border-top: 2px solid var(--color-text); background: var(--color-neutral-100);">
+          <span style="width: 9px; height: 9px; background: {{ statusColor }};"></span>
+          <span style="font-size: 12.5px; color: var(--color-neutral-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-variant-numeric: tabular-nums;">{{ statusText }}</span>
+          <span style="margin-left: auto; font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-neutral-700);">Click to descend · hover to purge</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;maxDepth&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:1,&quot;max&quot;:5,&quot;section&quot;:&quot;Treemap&quot;},&quot;gap&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:2,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:0,&quot;max&quot;:6,&quot;step&quot;:1,&quot;unit&quot;:&quot;px&quot;,&quot;section&quot;:&quot;Treemap&quot;},&quot;showSizes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Treemap&quot;}}">
+const RAMP = ['#2d2b2b', '#444141', '#605d5d', '#7d7979', '#9b9797', '#bab6b6'];
+const ACC = { 100: '#fff2ef', 200: '#ffe0d9', 300: '#ffc4b8', 400: '#ff9783', 500: '#ff563c', base: '#ec3013', 600: '#dd2b0f', 700: '#ae1800', 800: '#7c1405', 900: '#4d170e' };
+const PAPER = '#f3f2f2', INK = '#201e1d';
+const JUNK = { cache: 1, dev: 1 };
+const CAT_NAMES = {
+  system: 'System & Library', dev: 'Developer', media: 'Media', docs: 'Documents',
+  cache: 'Caches & junk', downloads: 'Downloads', apps: 'Applications', other: 'Other'
+};
+const CAT_STEP = { system: 1, media: 2, docs: 3, apps: 0, downloads: 4, other: 5, dev: 'a', cache: 'a' };
+
+const TREE = [
+  ['Library', 43.53, 'system', [
+    ['Application Support', 12.74, 'system', [
+      ['Google', 4.69, 'system', [['Chrome', 3.85, 'system', [['Default', 2.34], ['Service Worker', 0.86], ['GPUCache', 0.42], ['Crashpad', 0.23]]], ['Drive', 0.84]]],
+      ['Cursor', 3.27, 'dev', [['User', 1.86, 'dev', [['globalStorage', 1.67], ['state.vscdb', 0.19]]], ['Cache', 0.9], ['snapshots', 0.51]]],
+      ['Claude', 1.62, 'dev', [['Cache', 0.94], ['IndexedDB', 0.41], ['Local Storage', 0.27]]],
+      ['Postman', 1.21, 'dev', [['Partitions', 0.78], ['IndexedDB', 0.43]]],
+      ['Code', 1.4, 'dev', [['CachedData', 0.81], ['User', 0.59]]],
+      ['com.colliderli.iina', 0.55]
+    ]],
+    ['Group Containers', 10.06, 'media', [
+      ['group.net.whatsapp', 9.8, 'media', [['Message', 9.22, 'media', [['Media', 9.22, 'media', [['9199582', 3.1], ['91879', 1.4], ['91829', 1.2], ['12034', 1.1], ['16819', 0.9], ['91639', 0.8], ['21722', 0.72]]]]]]],
+      ['group.com.apple.notes', 0.26]
+    ]],
+    ['Mobile Documents', 6.28, 'docs', [['iCloud~Accounts', 5.8, 'docs', [['backup', 5.8]]], ['Desktop sync', 0.48]]],
+    ['Developer', 8.69, 'dev', [['CoreSimulator', 8.12, 'dev', [['Caches', 6.83, 'dev', [['dyld 25D2128', 6.83]]], ['Devices', 1.29]]], ['Xcode DerivedData', 0.57]]],
+    ['Containers', 2.94, 'apps', [['com.apple.mail', 0.9], ['com.spotify.client', 0.67], ['com.figma.Desktop', 0.62], ['com.docker.docker', 0.75]]],
+    ['Caches', 2.44, 'cache', [['Google Chrome', 1.31, 'cache', [['Default', 0.98], ['Code Cache', 0.33]]], ['com.apple.Safari', 0.62], ['Homebrew', 0.51]]]
+  ]],
+  ['Documents', 22.04, 'docs', [
+    ['GitHub', 22.04, 'docs', [
+      ['BharatVPN', 4.4, 'dev', [['backend', 1.62, 'dev', [['node_modules', 1.29]]], ['mobile', 1.44, 'dev', [['.angular cache', 0.92]]], ['admin', 0.86], ['infra', 0.68]]],
+      ['Arrow Logic Puzzle', 3.28, 'dev', [['build', 2.98, 'dev', [['app', 2.87, 'dev', [['intermediates', 2.49]]]]], ['assets', 0.3]]],
+      ['Lekhpal AI', 2.95, 'dev', [['build', 2.42, 'dev', [['app', 2.22]]], ['data', 0.32], ['web', 0.21]]],
+      ['atlas-ingest', 2.18, 'dev', [['node_modules', 1.31], ['.next', 0.52], ['core', 0.35]]],
+      ['caller-agent', 1.62, 'dev', [['node_modules', 1.02], ['packages', 0.6]]],
+      ['byadab-net', 1.44, 'dev', [['node_modules', 0.94], ['.next', 0.5]]],
+      ['heygen-tools', 1.24, 'dev', [['data', 0.72], ['web', 0.52]]],
+      ['fileandstyle', 1.18, 'dev', [['node_modules', 0.79], ['public', 0.39]]],
+      ['archive-2024', 3.75, 'other', [['releases.zip', 2.1], ['assets.tar.gz', 1.65]]]
+    ]]
+  ]],
+  ['Applications', 18.62, 'apps', [
+    ['Xcode.app', 7.9], ['Docker.app', 2.4], ['Figma.app', 1.35], ['Chrome.app', 1.28],
+    ['Final Cut Pro.app', 3.1], ['Slack.app', 0.72], ['Spotify.app', 0.61], ['Other apps', 1.26]
+  ]],
+  ['Photos Library', 15.21, 'media', [['originals', 11.8, 'media', [['2026', 4.2], ['2025', 3.9], ['2024', 3.7]]], ['resources', 2.6], ['database', 0.81]]],
+  ['Movies', 12.44, 'media', [['Screen Recordings', 5.6, 'media', [['demo-final.mov', 2.4], ['walkthrough.mov', 1.8], ['bug-repro.mov', 1.4]]], ['Exports', 4.1], ['iMovie Library', 2.74]]],
+  ['.gradle', 11.81, 'cache', [
+    ['caches', 8.93, 'cache', [['9.3.1', 5.98, 'cache', [['transforms', 5.74, 'cache', [['13664a7', 2.1], ['3b18594', 1.9], ['transforms-3', 1.74]]]]], ['modules-2', 1.62, 'cache', [['files-2.1', 1.4]]], ['8.14.3', 0.82], ['8.11.1', 0.51]]],
+    ['wrapper', 2.76, 'cache', [['dists', 2.76, 'cache', [['gradle-9.3.1', 1.57], ['gradle-8.14', 0.72], ['gradle-8.11', 0.47]]]]]
+  ]],
+  ['.npm', 7.88, 'cache', [['_cacache', 6.4, 'cache', [['content-v2', 3.17], ['index-v5', 1.9], ['sha512', 1.33]]], ['_logs', 0.36], ['_npx', 1.12]]],
+  ['System', 11.92, 'system', [['Library', 8.4, 'system', [['Caches', 3.1], ['Frameworks', 3.0], ['Assets', 2.3]]], ['Volumes', 3.52]]],
+  ['Downloads', 5.11, 'downloads', [['open-source-bundle.dmg', 1.42], ['PRESS-KIT.zip', 1.05], ['Xcode_16.4.xip', 1.24], ['dataset-v3.csv', 0.62], ['misc', 0.78]]],
+  ['Docker', 9.31, 'dev', [['vms/0/data', 8.2], ['overlay2', 1.11]]],
+  ['.nvm', 1.7, 'cache', [['versions/node', 1.53], ['.cache', 0.17]]],
+  ['.cursor', 1.36, 'dev', [['extensions', 1.02], ['projects', 0.34]]],
+  ['.android', 1.29, 'dev', [['avd', 0.86], ['sdcard.img', 0.43]]],
+  ['.ollama', 1.12, 'other', [['models', 1.12]]],
+  ['.local', 1.43, 'cache', [['share', 1.35]]]
+];
+
+function fmt(v) { return v >= 1 ? v.toFixed(2) + ' GB' : Math.round(v * 1024) + ' MB'; }
+function accStep(f) {
+  const steps = [ACC[300], ACC[400], ACC[500], ACC.base, ACC[600], ACC[700]];
+  return steps[Math.min(steps.length - 1, Math.floor(Math.pow(f, 0.4) * steps.length))];
+}
+function isLight(hex) {
+  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) > 150;
+}
+
+class Component extends DCLogic {
+  state = { w: 1000, h: 620, hover: null, cleaned: {}, view: 'treemap', path: [], cat: null, heat: false, filters: {} };
+
+  constructor(p) {
+    super(p);
+    this.canvasRef = React.createRef();
+    let uid = 0;
+    const build = (arr, cat, parent) => arr.map(r => {
+      const node = { id: 'n' + (uid++), name: r[0], v: r[1], cat: (typeof r[2] === 'string' ? r[2] : cat), parent: parent };
+      const kids = Array.isArray(r[2]) ? r[2] : r[3];
+      node.children = kids ? build(kids, node.cat, node) : null;
+      return node;
+    });
+    this.root = { id: 'root', name: 'Macintosh HD', v: 226.95, cat: 'other', parent: null, children: build(TREE, 'other', null) };
+    this.byId = {};
+    const walk = n => { this.byId[n.id] = n; (n.children || []).forEach(walk); };
+    walk(this.root);
+  }
+
+  componentDidMount() {
+    const el = this.canvasRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    this.ro = new ResizeObserver(() => {
+      const r = el.getBoundingClientRect();
+      if (Math.abs(r.width - this.state.w) > 1 || Math.abs(r.height - this.state.h) > 1) this.setState({ w: r.width, h: r.height });
+    });
+    this.ro.observe(el);
+    const r = el.getBoundingClientRect();
+    if (r.width) this.setState({ w: r.width, h: r.height });
+  }
+  componentWillUnmount() { if (this.ro) this.ro.disconnect(); }
+
+  size(n) {
+    if (this.state.cleaned[n.id]) return 0;
+    if (!n.children) return n.v;
+    let any = false;
+    const walk = x => { if (this.state.cleaned[x.id]) any = true; (x.children || []).forEach(walk); };
+    walk(n);
+    if (!any) return n.v;
+    const kidSum = n.children.reduce((s, c) => s + this.size(c), 0);
+    const declared = n.children.reduce((s, c) => s + c.v, 0);
+    return Math.max(0, n.v - declared) + kidSum;
+  }
+
+  current() { let n = this.root; this.state.path.forEach(id => { if (this.byId[id]) n = this.byId[id]; }); return n; }
+
+  squarify(items, rect) {
+    const out = []; let x = rect.x, y = rect.y, w = rect.w, h = rect.h;
+    let rem = items.reduce((s, i) => s + i.v, 0), i = 0;
+    const worst = (row, sum) => {
+      const frac = sum / rem, len = (w >= h ? w * frac : h * frac), other = (w >= h ? h : w);
+      let wr = 1;
+      row.forEach(it => { const seg = other * (it.v / sum); const r = Math.max(len / seg, seg / len); if (r > wr) wr = r; });
+      return wr;
+    };
+    while (i < items.length && rem > 0) {
+      let row = [], sum = 0, best = Infinity, j = i;
+      while (j < items.length) {
+        const s2 = sum + items[j].v, r = worst(row.concat([items[j]]), s2);
+        if (!row.length || r <= best) { row.push(items[j]); sum = s2; best = r; j++; } else break;
+      }
+      const frac = sum / rem;
+      if (w >= h) { const rw = w * frac; let ry = y; row.forEach(it => { const rh = h * (it.v / sum); out.push({ node: it.node, x: x, y: ry, w: rw, h: rh }); ry += rh; }); x += rw; w -= rw; }
+      else { const rh = h * frac; let rx = x; row.forEach(it => { const rw = w * (it.v / sum); out.push({ node: it.node, x: rx, y: y, w: rw, h: rh }); rx += rw; }); y += rh; h -= rh; }
+      rem -= sum; i = j;
+    }
+    return out;
+  }
+
+  buildBlocks(W, H) {
+    const maxDepth = Math.max(1, Math.min(5, this.props.maxDepth ?? 3));
+    const pad = Math.max(0, Math.min(6, this.props.gap ?? 2));
+    const heat = this.state.heat, total = Math.max(0.01, this.size(this.current()));
+    const out = [];
+    const walk = (node, rect, depth) => {
+      const kids = (node.children || []).map(c => ({ node: c, v: this.size(c) })).filter(k => k.v > 0.001).sort((a, b) => b.v - a.v);
+      if (!kids.length) return;
+      const head = (rect.h > 46 && rect.w > 64 && depth > 0) ? 18 : 0;
+      const inner = { x: rect.x + pad, y: rect.y + head + pad, w: Math.max(1, rect.w - pad * 2), h: Math.max(1, rect.h - head - pad * 2) };
+      if (inner.w < 8 || inner.h < 8) return;
+      this.squarify(kids, inner).forEach(r => {
+        const n = r.node, frac = this.size(n) / total;
+        const dimmed = this.state.cat && n.cat !== this.state.cat;
+        const leaf = !n.children || depth + 1 >= maxDepth;
+        const junk = !!JUNK[n.cat];
+        let fill;
+        if (heat) fill = accStep(frac);
+        else if (junk) fill = leaf ? ACC.base : [ACC[700], ACC[600], ACC.base, ACC[500], ACC[400], ACC[300]][Math.min(5, depth)];
+        else { const step = CAT_STEP[n.cat]; fill = RAMP[Math.min(5, (typeof step === 'number' ? step : 2) + (leaf ? 1 : 0) + Math.floor(depth / 2))]; }
+        const hovered = this.state.hover === n.id;
+        out.push({
+          node: n, depth: depth, frac: frac, w: r.w, h: r.h, leaf: leaf, hovered: hovered, fill: fill,
+          style: {
+            position: 'absolute', left: (r.x / W * 100) + '%', top: (r.y / H * 100) + '%',
+            width: (r.w / W * 100) + '%', height: (r.h / H * 100) + '%',
+            background: fill, border: '2px solid ' + (hovered ? INK : PAPER), borderRadius: 0,
+            boxSizing: 'border-box', overflow: 'hidden', cursor: 'pointer',
+            opacity: dimmed ? 0.22 : 1, zIndex: depth * 2 + (hovered ? 40 : 0),
+            transition: 'left .34s cubic-bezier(.2,.8,.2,1), top .34s cubic-bezier(.2,.8,.2,1), width .34s cubic-bezier(.2,.8,.2,1), height .34s cubic-bezier(.2,.8,.2,1), opacity .2s ease, background .2s ease'
+          }
+        });
+        if (!leaf) walk(n, r, depth + 1);
+      });
+    };
+    walk(this.current(), { x: 0, y: 0, w: W, h: H }, 0);
+    return out;
+  }
+
+  renderVals() {
+    const S = this.state, W = Math.max(120, S.w), H = Math.max(120, S.h);
+    const cleanedTotal = Object.keys(S.cleaned).reduce((s, id) => s + (this.byId[id] ? this.byId[id].v : 0), 0);
+    const used = 226.95 - cleanedTotal, usedPct = Math.round(used / 245.11 * 100);
+
+    const blocks = this.buildBlocks(W, H).map(b => {
+      const n = b.node, light = isLight(b.fill);
+      const ink = light ? INK : PAPER;
+      const showSize = (this.props.showSizes ?? true) && b.w > 132 && b.h > 22;
+      return {
+        name: b.w > 56 && b.h > 22 ? n.name : '',
+        sizeLabel: showSize ? fmt(this.size(n)) : '',
+        style: b.style,
+        hovered: b.hovered && b.w > 74 && b.h > 32,
+        labelStyle: { display: b.w > 56 && b.h > 22 ? 'flex' : 'none', alignItems: 'baseline', gap: '8px', padding: '4px 6px', background: b.leaf ? 'transparent' : (light ? 'rgba(32,30,29,.09)' : 'rgba(243,242,242,.14)') },
+        nameStyle: { fontSize: b.depth === 0 ? '12px' : '11px', fontWeight: b.depth === 0 ? 700 : 500, letterSpacing: '-0.01em', color: ink, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' },
+        sizeStyle: { marginLeft: 'auto', fontSize: '10.5px', color: ink, opacity: .75, fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' },
+        actionStyle: { position: 'absolute', left: '6px', bottom: '6px' },
+        cleanBtnStyle: { height: '24px', padding: '0 10px', border: '2px solid ' + INK, background: PAPER, color: ACC[700], fontFamily: 'var(--font-body)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', cursor: 'pointer', animation: 'popIn .14s ease-out' },
+        onEnter: () => this.setState({ hover: n.id }),
+        onClick: e => { e.stopPropagation(); if (n.children) this.setState({ path: this.pathTo(n), hover: null }); },
+        onClean: e => { e.stopPropagation(); this.setState(st => ({ cleaned: Object.assign({}, st.cleaned, { [n.id]: true }), hover: null })); }
+      };
+    });
+
+    const cur = this.current();
+    const crumbs = [{ node: this.root }].concat(S.path.map(id => ({ node: this.byId[id] }))).map((c, i, arr) => ({
+      name: c.node.name,
+      style: { fontSize: '13px', fontWeight: i === arr.length - 1 ? 700 : 400, color: i === arr.length - 1 ? INK : 'var(--color-neutral-700)', cursor: 'pointer', whiteSpace: 'nowrap' },
+      sepStyle: { fontSize: '12px', color: 'var(--color-neutral-400)', display: i === arr.length - 1 ? 'none' : 'inline' },
+      onClick: () => this.setState({ path: S.path.slice(0, i) })
+    }));
+
+    const catTotals = {};
+    this.root.children.forEach(t => { catTotals[t.cat] = (catTotals[t.cat] || 0) + this.size(t); });
+    const acc = n => { (n.children || []).forEach(c => { if (c.cat !== n.cat) { catTotals[c.cat] = (catTotals[c.cat] || 0); } acc(c); }); };
+    acc(this.root);
+    const maxCat = Math.max.apply(null, Object.values(catTotals));
+    const cats = Object.keys(catTotals).sort((a, b) => catTotals[b] - catTotals[a]).map(k => {
+      const junk = !!JUNK[k], on = S.cat === k;
+      const mark = junk ? ACC.base : RAMP[Math.min(5, typeof CAT_STEP[k] === 'number' ? CAT_STEP[k] : 2)];
+      return {
+        name: CAT_NAMES[k], sizeLabel: fmt(catTotals[k]),
+        rowStyle: { display: 'flex', alignItems: 'center', gap: '11px', padding: '10px 8px', cursor: 'pointer', background: on ? ACC[100] : 'transparent', borderTop: '2px solid ' + (on ? ACC.base : 'transparent'), borderBottom: '2px solid ' + (on ? ACC.base : 'transparent') },
+        markStyle: { width: '10px', height: '10px', flex: '0 0 10px', background: mark },
+        barStyle: { height: '100%', width: (catTotals[k] / maxCat * 100) + '%', background: junk ? ACC.base : INK, transition: 'width .3s ease' },
+        onClick: () => this.setState({ cat: on ? null : k })
+      };
+    });
+
+    const filters = ['node_modules', 'Xcode', 'Gradle', 'Docker', 'Simulators', 'Disk images', 'Archives'].map(f => ({
+      name: f,
+      style: { padding: '6px 11px', fontSize: '12.5px', cursor: 'pointer', border: '2px solid ' + (S.filters[f] ? ACC.base : 'var(--color-neutral-400)'), background: S.filters[f] ? ACC[100] : 'transparent', color: S.filters[f] ? ACC[800] : 'var(--color-neutral-800)', fontWeight: S.filters[f] ? 700 : 400 },
+      onClick: () => this.setState(st => ({ filters: Object.assign({}, st.filters, { [f]: !st.filters[f] }) }))
+    }));
+
+    const kids = (cur.children || []).map(c => ({ n: c, v: this.size(c) })).filter(k => k.v > 0.001).sort((a, b) => b.v - a.v);
+    const maxKid = kids.length ? kids[0].v : 1;
+    const rows = kids.map(k => {
+      const junk = !!JUNK[k.n.cat];
+      return {
+        name: k.n.name, sizeLabel: fmt(k.v),
+        style: { display: 'flex', alignItems: 'center', gap: '14px', padding: '11px 14px', borderBottom: '2px solid var(--color-neutral-200)' },
+        markStyle: { width: '9px', height: '9px', flex: '0 0 9px', background: junk ? ACC.base : RAMP[Math.min(5, typeof CAT_STEP[k.n.cat] === 'number' ? CAT_STEP[k.n.cat] : 2)] },
+        barStyle: { height: '100%', width: (k.v / maxKid * 100) + '%', background: junk ? ACC.base : INK },
+        tag: junk ? 'Regenerable' : 'Review',
+        tagStyle: { flex: '0 0 108px', textAlign: 'left', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '4px 8px', background: junk ? ACC[100] : 'var(--color-neutral-200)', color: junk ? ACC[800] : 'var(--color-neutral-800)', border: '2px solid ' + (junk ? ACC[300] : 'var(--color-neutral-400)') },
+        onClick: () => { if (k.n.children) this.setState({ path: this.pathTo(k.n) }); },
+        onClean: e => { e.stopPropagation(); this.setState(st => ({ cleaned: Object.assign({}, st.cleaned, { [k.n.id]: true }) })); }
+      };
+    });
+
+    const hov = S.hover && this.byId[S.hover];
+    const tab = active => ({ padding: '6px 15px', fontSize: '12.5px', fontWeight: active ? 700 : 500, cursor: 'pointer', color: active ? PAPER : 'var(--color-neutral-800)', background: active ? INK : 'transparent', border: '2px solid ' + INK, borderRight: active ? '2px solid ' + INK : '2px solid ' + INK, marginRight: '-2px' });
+
+    return {
+      blocks: blocks, crumbs: crumbs, cats: cats, filters: filters, rows: rows, canvasRef: this.canvasRef,
+      canvasStyle: { position: 'relative', width: '100%', height: '100%', background: PAPER, border: '2px solid ' + INK, overflow: 'hidden', display: S.view === 'treemap' ? 'block' : 'none' },
+      listStyle: { position: 'absolute', inset: '16px', display: S.view === 'list' ? 'block' : 'none' },
+      tabTreemapStyle: tab(S.view === 'treemap'), tabListStyle: tab(S.view === 'list'),
+      showTreemap: () => this.setState({ view: 'treemap' }), showList: () => this.setState({ view: 'list' }),
+      goUp: () => this.setState({ path: S.path.slice(0, -1) }),
+      onLeave: () => this.setState({ hover: null }),
+      toggleHeat: () => this.setState({ heat: !S.heat }),
+      heatLabel: S.heat ? 'Colour: weight' : 'Colour: category',
+      queueCount: Object.keys(S.cleaned).length,
+      restoreAll: () => this.setState({ cleaned: {} }),
+      usedPct: usedPct, usedLabel: fmt(used), freeLabel: fmt(245.11 - used),
+      gaugeColor: usedPct > 85 ? ACC.base : INK,
+      barUsedStyle: { width: (used / 245.11 * 100) + '%', height: '100%', background: INK, transition: 'width .4s ease' },
+      barCleanStyle: { width: (cleanedTotal / 245.11 * 100) + '%', height: '100%', background: 'repeating-linear-gradient(45deg,' + ACC.base + ',' + ACC.base + ' 3px,' + ACC[300] + ' 3px,' + ACC[300] + ' 6px)', transition: 'width .4s ease' },
+      reclaimRowStyle: { display: cleanedTotal > 0 ? 'flex' : 'none', alignItems: 'center', justifyContent: 'space-between', marginTop: '14px', padding: '9px 11px', background: ACC[100], border: '2px solid ' + ACC.base },
+      reclaimedLabel: fmt(cleanedTotal),
+      nodeCountLabel: (cur.children || []).length + ' items · ' + fmt(this.size(cur)),
+      statusColor: hov ? (JUNK[hov.cat] ? ACC.base : INK) : 'var(--color-neutral-400)',
+      statusText: hov ? this.fullPath(hov) + '  —  ' + fmt(this.size(hov)) : 'Ready · ' + fmt(this.size(cur)) + ' mapped in ' + cur.name
+    };
+  }
+
+  pathTo(n) { const out = []; let c = n; while (c && c !== this.root) { out.unshift(c.id); c = c.parent; } return out; }
+  fullPath(n) { const out = []; let c = n; while (c) { out.unshift(c.name); c = c.parent; } return out.join(' / '); }
+}
+</script>
+</body>
+</html>
