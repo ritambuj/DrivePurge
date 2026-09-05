@@ -154,7 +154,7 @@ struct LicenseSheet: View {
                 .opacity(keyInput.trimmingCharacters(in: .whitespaces).isEmpty ? 0.5 : 1)
 
                 Button { NSWorkspace.shared.open(LicenseStore.purchaseURL) } label: {
-                    Text("Buy a licence — €34")
+                    Text("Buy a licence — $9.90")
                         .font(Theme.font(13))
                         .foregroundColor(Theme.textControl)
                         .frame(height: 34)
